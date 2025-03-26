@@ -9,7 +9,7 @@ function App() {
 		<>
 			{/* <Header /> */}
 			{/* {!isLoading && <Outlet />} */}
-			<div className="p-2 rounded-xl bg-gray-200 flex gap-2">
+			<div className="p-2 rounded-xl bg-gray-200 flex gap-2 align-center justify-center">
 				<span className='mdi-filled'>mail</span>
 				<input 
 				  type="email" 
