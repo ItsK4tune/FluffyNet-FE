@@ -1,20 +1,21 @@
 import axios from "axios";
 
-export const login = async (password: string, username?: string, email?: string) => {
+export const login = async (usernameOrEmail: string, password: string) => {
     try {
-        const response = await axios.post("http://58.186.92.88/api/auth/login", {
-            username,
-            email,
-            password
-        }, {
-            headers: {
-                "Content-Type": "application/json"
-            }
+        const payload: { password: string; email?: string; username?: string } = { password };
+
+        if (usernameOrEmail.includes("@")) {
+            payload.email = usernameOrEmail;
+        } else {
+            payload.username = usernameOrEmail;
+        }
+
+        const response = await axios.post("http://58.186.92.88/api/auth/login", payload, {
+            headers: { "Content-Type": "application/json" }
         });
 
         return response.data;
     } catch (error) {
-        console.error("Login failed:", error);
-        throw error; 
+        throw error;
     }
 };

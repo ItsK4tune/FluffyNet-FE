@@ -1,39 +1,43 @@
-import { useCallback, useState } from "react";
-import { FloatingIcons } from "../components/elements/floating-icon"
+import { useEffect, useMemo, useState } from "react";
+import { FloatingIconsBackground } from "../components/elements/floating-icon"
 import { InputForm } from "../components/elements/input-form"
 import { login } from "../services/login";
 
 export const Login = () => {
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-    });
+    const [user, setUser] = useState('');
+    const [pwd, setPwd] = useState('');
+    const [errMsg, setErrMsg] = useState('');
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData(prev => {
-            const newValue = e.target.value;
-            if (prev[e.target.name as keyof typeof prev] === newValue) return prev; // Tránh re-render không cần thiết
-            return { ...prev, [e.target.name]: newValue };
-        });
-    }, []);
+    useEffect(() => {
+        setErrMsg('');
+    }, [user, pwd])
 
     const handleLogin = async () => {
         try {
-            // const data = await login(formData.username, formData.password);
-            await login(formData.username, formData.password)
+            const username = user;
+            const password = pwd;
+            const loginWithTimeout = Promise.race([
+                login(username, password),
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Request timeout!")), 5000)
+                ),
+            ]);
+            await loginWithTimeout;
             alert("Login successful");
         } catch (error) {
-            alert("Login error");
+            if (error instanceof Error)
+                alert(error.message);
+            setErrMsg("Login failed");
         }
     };
-
+    
+    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+    
     return (
         <div className="flex h-screen">
             {/* Background animated icons */}
             <div className="absolute inset-0">
-                {Array.from({ length: 10 }).map((_, i) => (
-                    <FloatingIcons key={i} />
-                ))}
+                {floatingIconsMemo}
             </div>
 
             {/*Slogan side*/}
@@ -49,8 +53,23 @@ export const Login = () => {
                     <p className="text-gray-500 text-center mb-6">Log in with your account</p>
 
                     <div className="space-y-4">
-                        <InputForm icon="mail" placeholder="Email or username" className={'placeholder-gray-400'} value={formData.username} onChange={handleChange}/>
-                        <InputForm icon="lock" type='password' placeholder="Password" className={'placeholder-gray-400'} value={formData.password} onChange={handleChange}/>
+                        <InputForm 
+                          name="username" 
+                          icon="mail" 
+                          placeholder="Email or username" 
+                          className={'placeholder-gray-400'} 
+                          value={user}
+                          onChange={(e) => setUser(e.target.value)}
+                        />
+                        <InputForm 
+                          name="password"
+                          icon="lock" 
+                          type='password' 
+                          placeholder="Password" 
+                          className={'placeholder-gray-400'} 
+                          value={pwd}
+                          onChange={(e) => setPwd(e.target.value)}
+                        />
                     </div>
 
                     <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4" onClick={handleLogin}>

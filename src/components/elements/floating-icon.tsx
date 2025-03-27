@@ -1,20 +1,4 @@
-// interface FloatingIconProps {
-//     icon: string;
-//     size: number;
-//     top: string;
-//     left: string;
-// }
-
-// export const FloatingIcon = ({ icon, size, top, left }: FloatingIconProps) => (
-//     <span
-//       className="absolute text-white opacity-20 animate-floating"
-//       style={{ fontSize: size, top, left }}
-//     >
-//       <span className="material-icons">{icon}</span>
-//     </span>
-// );
-
-export const FloatingIcons = () => {
+const FloatingIcons = () => {
     const icons = ["💬", "🎵", "❤️", "🔔", "👍", "😊"]; //Test purpose
 
     return (
@@ -37,6 +21,17 @@ export const FloatingIcons = () => {
                     </span>
                 );
             })}
+        </div>
+    );
+};
+
+
+export const FloatingIconsBackground = () => {
+    return (
+        <div className="absolute inset-0">
+            {Array.from({ length: 10 }).map((_, i) => (
+                <FloatingIcons key={i} />
+            ))}
         </div>
     );
 };
