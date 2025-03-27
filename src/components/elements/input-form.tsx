@@ -1,13 +1,6 @@
 import { cn } from "../../libs/utils";
 
-interface InputFormProps {
-    icon: string;
-    type?: string;
-    placeholder: string;
-    className?: string
-}
-
-export const InputForm = ({ icon, type = 'text', placeholder, className} : InputFormProps) => {
+export const InputForm = ({ icon, type = 'text', placeholder, className, value, onChange} : any) => {
     return (
         <div className="p-2 rounded-xl bg-gray-200 flex gap-2 align-center justify-center">
             <span className='mdi-filled'>{icon}</span>
@@ -15,6 +8,8 @@ export const InputForm = ({ icon, type = 'text', placeholder, className} : Input
                 type={type}
                 placeholder={placeholder}
                 className={cn('w-full', className)}
+                value={value}
+                onChange={onChange}
             />
         </div>
     )

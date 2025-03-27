@@ -1,7 +1,32 @@
+import { useCallback, useState } from "react";
 import { FloatingIcons } from "../components/elements/floating-icon"
 import { InputForm } from "../components/elements/input-form"
+import { login } from "../services/login";
 
 export const Login = () => {
+    const [formData, setFormData] = useState({
+        username: "",
+        password: "",
+    });
+
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => {
+            const newValue = e.target.value;
+            if (prev[e.target.name as keyof typeof prev] === newValue) return prev; // Tránh re-render không cần thiết
+            return { ...prev, [e.target.name]: newValue };
+        });
+    }, []);
+
+    const handleLogin = async () => {
+        try {
+            // const data = await login(formData.username, formData.password);
+            await login(formData.username, formData.password)
+            alert("Login successful");
+        } catch (error) {
+            alert("Login error");
+        }
+    };
+
     return (
         <div className="flex h-screen">
             {/* Background animated icons */}
@@ -24,11 +49,11 @@ export const Login = () => {
                     <p className="text-gray-500 text-center mb-6">Log in with your account</p>
 
                     <div className="space-y-4">
-                        <InputForm icon="mail" placeholder="Email or username" className={'placeholder-gray-400'}/>
-                        <InputForm icon="lock" type="password" placeholder="Password" className={'placeholder-gray-400'}/>
+                        <InputForm icon="mail" placeholder="Email or username" className={'placeholder-gray-400'} value={formData.username} onChange={handleChange}/>
+                        <InputForm icon="lock" type='password' placeholder="Password" className={'placeholder-gray-400'} value={formData.password} onChange={handleChange}/>
                     </div>
 
-                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4">
+                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4" onClick={handleLogin}>
                         Sign in
                     </button>
 

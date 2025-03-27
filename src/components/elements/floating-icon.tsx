@@ -21,7 +21,6 @@ export const FloatingIcons = () => {
         <div className="absolute inset-0 overflow-hidden">
             {icons.map((icon, index) => {
                 const className = "absolute text-6xl opacity-30 animate-floating";
-                console.log("Class được render:", className);
 
                 return (
                     <span
