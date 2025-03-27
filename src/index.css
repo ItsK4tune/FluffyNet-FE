@@ -1,14 +1,24 @@
 @import "tailwindcss";
 
 @font-face {
+  font-family: "Inter";
+  src: url("./assets/font/Inter.ttf");
+}
+
+@font-face {
   font-family: "Material Icons";
-  src: url("./assets/mdi.woff2") format("woff2");
+  src: url("./assets/font/Inter-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Material Icons";
+  src: url("./assets/font/mdi.woff2") format("woff2");
   font-weight: normal;
 }
 
 @font-face {
   font-family: "Material Icons Filled";
-  src: url("./assets/mdi-filled.woff2") format("woff2");
+  src: url("./assets/font/mdi-filled.woff2") format("woff2");
   font-weight: normal;
 }
 
@@ -46,4 +56,20 @@
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "liga";
+}
+
+.animate-floating {
+  animation: floating 2s infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
