@@ -1,4 +1,5 @@
 import axios from "axios";
+import { env } from "../libs";
 
 export const login = async (usernameOrEmail: string, password: string) => {
     try {
@@ -10,11 +11,9 @@ export const login = async (usernameOrEmail: string, password: string) => {
             payload.username = usernameOrEmail;
         }
 
-        const response = await axios.post("http://58.186.92.88/api/auth/login", payload, {
+        await axios.post(`${env.be.url}/api/auth/login`, payload, {
             headers: { "Content-Type": "application/json" }
         });
-
-        return response.data;
     } catch (error) {
         throw error;
     }
