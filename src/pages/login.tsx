@@ -37,10 +37,6 @@ export const Login = () => {
             </div>
 
             {/* Main form */}
-            {/* {isLogin 
-            ?   <LoginForm user={user} setUser={setUser} pwd={pwd} setPwd={setPwd} errMsg={errMsg} setErrMsg={setErrMsg} setState={setState}/>
-            :   <RegisterForm user={user} setUser={setUser} pwd={pwd} setPwd={setPwd} errMsg={errMsg} setErrMsg={setErrMsg} setState={setState}/>
-            } */}
             { renderForm() }
         </div>
     )

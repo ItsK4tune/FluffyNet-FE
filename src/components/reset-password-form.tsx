@@ -80,7 +80,7 @@ export const ResetPasswordForm = ({pwd, setPwd, message, setMessage, token}: Reg
 
                 {message && <p className="text-red-500 text-center mt-2">{message}</p>}
 
-                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={handleResetPassword}>
+                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" onClick={handleResetPassword}>
                     Reset password
                 </button>
 
@@ -91,7 +91,7 @@ export const ResetPasswordForm = ({pwd, setPwd, message, setMessage, token}: Reg
                 </div>
 
                 <button 
-                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform" 
+                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" 
                     onClick={redirect}
                 >
                     Remember your password? Sign in

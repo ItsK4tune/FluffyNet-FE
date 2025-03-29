@@ -103,7 +103,7 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
             <div className={cn("w-3/5 flex justify-center items-center", formAnimation, initAnimation)}>
                 <div className="bg-white p-10 rounded-2xl shadow-lg w-[30vw] z-10 flex flex-col justify-center">
                     <h2 className="text-2xl font-bold text-center">Welcome back</h2>
-                    <p className="text-gray-500 text-center mb-6">Log in with your account</p>
+                    <p className="text-gray-500 text-center mb-6">Access your personalized space by logging in below</p>
 
                     <div className="space-y-4">
                         <InputForm 
@@ -125,12 +125,12 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
                         />
                     </div>
 
-                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={() => handleLogin()}>
+                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" onClick={() => handleLogin()}>
                         Sign in
                     </button>
                 
                     <p className="text-yellow-500 text-center mt-2 text-sm cursor-pointer" onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('forgot')}}>
-                        Forgot your password?
+                        Forgot your password? Click me
                     </p>
 
                     {message && <p className="text-red-500 text-center mt-2">{message}</p>}
@@ -142,14 +142,14 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
                     </div>
 
                     <button 
-                        className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform"
+                        className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102"
                         onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('register'), setMessage("")}}
                     >
                         Don't have an account? Sign up
                     </button>
                     
                     <button 
-                        className="w-full flex items-center justify-center bg-gray-100 p-3 rounded-xl hover:outline hover:outline-black active:scale-95 transition-transform"
+                        className="w-full flex items-center justify-center bg-gray-100 p-3 rounded-xl hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102"
                         onClick={handleGoogle}
                     >
                         <img src="src\assets\img\google.png" alt="Google" className="w-5 h-5 mr-2" />

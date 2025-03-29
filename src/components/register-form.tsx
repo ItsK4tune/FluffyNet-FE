@@ -83,7 +83,9 @@ export const RegisterForm = ({user, setUser, pwd, setPwd, message, setMessage, s
 
             <div className="bg-white p-10 rounded-2xl shadow-lg w-[30vw] z-10">
                 <h2 className="text-2xl font-bold text-center">Create Account</h2>
-                <p className="text-gray-500 text-center mb-6">Fill your account detail</p>
+                <p className="text-gray-600 text-center mb-6">
+                    Step into a world of possibilities. Begin your journey by creating your account.
+                </p>
 
                 <div className="space-y-4">
                     <InputForm 
@@ -114,7 +116,7 @@ export const RegisterForm = ({user, setUser, pwd, setPwd, message, setMessage, s
                     />
                 </div>
 
-                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={handleRegister}>
+                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" onClick={handleRegister}>
                     Sign up
                 </button>
 
@@ -127,14 +129,14 @@ export const RegisterForm = ({user, setUser, pwd, setPwd, message, setMessage, s
                 </div>
 
                 <button 
-                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform" 
+                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" 
                     onClick={async () => {await handleAnimation("animate-fade-out"), setState('login'), setMessage("")}}
                 >
                     Already have an account? Sign in
                 </button>
 
                 <button 
-                    className="w-full flex items-center justify-center bg-gray-100 p-3 rounded-xl shadow hover:outline hover:outline-black active:scale-95 transition-transform"
+                    className="w-full flex items-center justify-center bg-gray-100 p-3 rounded-xl shadow hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102"
                     onClick={handleGoogle}
                 >
                     <img src="src\assets\img\google.png" alt="Google" className="w-5 h-5 mr-2" />

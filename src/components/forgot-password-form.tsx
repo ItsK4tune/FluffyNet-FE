@@ -63,7 +63,7 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
 
             <div className="bg-white p-10 rounded-2xl shadow-lg w-[30vw] z-10">
                 <h2 className="text-2xl font-bold text-center">Forgot Password</h2>
-                <p className="text-gray-500 text-center mb-6">Enter your email to receive password reset instructions</p>
+                <p className="text-gray-500 text-center mb-6">Whisper your email to the fairies, and they'll help you reset your password.</p>
 
                 <div className="space-y-4">
                     <InputForm 
@@ -76,7 +76,7 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                     />
                 </div>
 
-                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={handleForgot}>
+                <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" onClick={handleForgot}>
                     Send link
                 </button>
 
@@ -89,14 +89,14 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                 </div>
 
                 <button 
-                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform" 
+                    className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" 
                     onClick={async () => {await handleAnimation("animate-fade-out"), setState('login')}}
                 >
                     Already have an account? Sign in
                 </button>
                 <button 
-                    className="w-full bg-gray-100 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform" 
-                    onClick={async () => {await handleAnimation("animate-fade-out"), setState('login')}}
+                    className="w-full bg-gray-100 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" 
+                    onClick={async () => {await handleAnimation("animate-fade-out"), setState('register')}}
                 >
                     Don't have an account? Sign up
                 </button>
