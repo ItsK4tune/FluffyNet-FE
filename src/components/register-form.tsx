@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { InputForm } from "./elements/input-form"
-import { register } from "../services/register";
+import { register } from "../services/login/register";
 import { env } from "../libs";
 import { cn } from "../libs/utils";
-import { google } from "../services/google";
+import { google } from "../services/login/google";
 
 interface RegisterFormProps {
     user: string;
@@ -59,7 +59,7 @@ export const RegisterForm = ({user, setUser, pwd, setPwd, message, setMessage, s
 
     const handleGoogle = async () => {
         try {
-            await google();
+            google();
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
                 setMessage((error as any).response.data.message); 
@@ -128,7 +128,7 @@ export const RegisterForm = ({user, setUser, pwd, setPwd, message, setMessage, s
 
                 <button 
                     className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform" 
-                    onClick={async () => {await handleAnimation("animate-fade-out"), setState('login')}}
+                    onClick={async () => {await handleAnimation("animate-fade-out"), setState('login'), setMessage("")}}
                 >
                     Already have an account? Sign in
                 </button>

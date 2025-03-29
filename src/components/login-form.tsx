@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { login } from "../services/login";
+import { login } from "../services/login/login";
 import { InputForm } from "./elements/input-form"
 import { cn } from "../libs/utils";
 import { env } from "../libs";
-import { google } from "../services/google";
+import { google } from "../services/login/google";
 
 interface LoginFormProps {
     user: string;
@@ -143,7 +143,7 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
 
                     <button 
                         className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform"
-                        onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('register')}}
+                        onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('register'), setMessage("")}}
                     >
                         Don't have an account? Sign up
                     </button>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { env } from "../libs";
+import { env } from "../../libs";
 
 export const login = async (usernameOrEmail: string, password: string) => {
     try {
