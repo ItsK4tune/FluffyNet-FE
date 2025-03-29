@@ -11,9 +11,11 @@ export const login = async (usernameOrEmail: string, password: string) => {
             payload.username = usernameOrEmail;
         }
 
-        await axios.post(`${env.be.url}/api/auth/login`, payload, {
+        const data = await axios.post(`${env.be.url}/api/auth/login`, payload, {
             headers: { "Content-Type": "application/json" }
         });
+
+        return data;
     } catch (error) {
         throw error;
     }

@@ -33,13 +33,12 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                 throw new Error("Please fill in all fields!");
             }
             const emailAddress = email;
-            const loginWithTimeout = Promise.race([
+            Promise.race([
                 forgotPassword(emailAddress),
                 new Promise((_, reject) =>
                     setTimeout(() => reject(new Error("Request timeout!")), 5000)
                 ),
             ]);
-            await loginWithTimeout;
             alert("Recovery email sent successfully. Please check your inbox.");
         } catch (error) {
             if ((error as any)?.response?.data?.message) {

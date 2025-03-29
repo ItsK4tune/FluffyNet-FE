@@ -33,6 +33,10 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
             if (!user || !pwd) {
                 throw new Error("Please fill in all fields!");
             }
+            if (localStorage.getItem(`jwt:${user}`)) {
+                throw new Error("You are already logged in!");
+            }
+
             const username = user;
             const password = pwd;
             const loginWithTimeout = Promise.race([
@@ -41,8 +45,19 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
                     setTimeout(() => reject(new Error("Request timeout!")), 5000)
                 ),
             ]);
-            await loginWithTimeout;
-            alert("Login successful");
+            const response = await loginWithTimeout;
+            const token = (response as { data?: { token?: string } }).data?.token;
+            if (token) {
+                Object.keys(localStorage).forEach((key) => {
+                    if (key.startsWith("jwt:")) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                localStorage.setItem(`jwt:${user}`, token);
+            } else {
+                throw new Error("Token not found in response.");
+            }
+            alert((response as { data?: { message?: string } }).data?.message);
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
                 setMessage((error as any).response.data.message); 
@@ -110,11 +125,11 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
                         />
                     </div>
 
-                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={handleLogin}>
+                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform" onClick={() => handleLogin()}>
                         Sign in
                     </button>
                 
-                    <p className="text-yellow-500 text-center mt-2 text-sm cursor-pointer" onClick={() => setState('forgot')}>
+                    <p className="text-yellow-500 text-center mt-2 text-sm cursor-pointer" onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('forgot')}}>
                         Forgot your password?
                     </p>
 
