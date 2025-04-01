@@ -12,13 +12,7 @@ export const ResetPassword = () => {
 
     if (!token) {
         return (
-            <div className="flex h-screen bg-pink-100">
-                <div className="absolute inset-0">
-                    {floatingIconsMemo}
-                </div>
-                
-                <Return/>
-            </div>
+            <Return/>
         )
     }
 
@@ -31,12 +25,10 @@ export const ResetPassword = () => {
 
     return (
         <div className="flex h-screen bg-pink-100">
-            {/* Background animated icons */}
             <div className="absolute inset-0">
                 {floatingIconsMemo}
             </div>
 
-            {/* Main form */}
             <ResetPasswordForm pwd={pwd} setPwd={setPwd} message={message} setMessage={setMessage} token={token} />
         </div>
     )

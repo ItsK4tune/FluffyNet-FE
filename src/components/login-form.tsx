@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { login } from "../services/login/login";
-import { InputForm } from "./elements/input-form"
+import { InputForm } from "./elements/input-form"; // Assuming this is responsive or styles adapt
 import { cn } from "../libs/utils";
 import { env } from "../libs";
 import { google } from "../services/login/google";
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
     user: string;
@@ -15,28 +16,38 @@ interface LoginFormProps {
     setState: (value: string) => void;
 }
 
-export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setState} : LoginFormProps) => {
+export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, setState }: LoginFormProps) => {
     const [initAnimation, setInitAnimation] = useState('animate-fade-in');
     const [sloganAnimation, setSloganAnimation] = useState("");
     const [formAnimation, setFormAnimation] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith("jwt:")) {
+                navigate('/');
+            }
+        });
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setInitAnimation(""); 
-        }, env.animate.fade * 1000); 
+            setInitAnimation("");
+        }, env.animate.fade * 1000);
 
-        return () => clearTimeout(timer); 
+        return () => clearTimeout(timer);
     }, []);
 
     const handleLogin = async () => {
+        setMessage("");
         try {
             if (!user || !pwd) {
                 throw new Error("Please fill in all fields!");
             }
-            if (localStorage.getItem(`jwt:${user}`)) {
-                throw new Error("You are already logged in!");
-            }
 
+            setIsLoading(true);
             const username = user;
             const password = pwd;
             const loginWithTimeout = Promise.race([
@@ -53,110 +64,165 @@ export const LoginForm = ({user, setUser, pwd, setPwd, message, setMessage, setS
                         localStorage.removeItem(key);
                     }
                 });
-                localStorage.setItem(`jwt:${user}`, token);
+                localStorage.setItem(`jwt:${user}`, token); 
+                setMessage((response as { data?: { message?: string } }).data?.message || "Login Successful!");
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                await handleAnimation("animate-fade-out", "animate-fade-out");
+                navigate('/');
             } else {
-                throw new Error("Token not found in response.");
+                throw new Error("Login failed. Token not received."); 
             }
-            alert((response as { data?: { message?: string } }).data?.message);
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message); 
+                setMessage((error as any).response.data.message);
             } else if (error instanceof Error && error.message) {
                 setMessage(error.message);
             } else {
-                setMessage("An unknown error occurred.");
+                setMessage("An unknown error occurred during login.");
             }
+            setIsLoading(false);
         }
     };
 
     const handleGoogle = async () => {
+        if (isLoading)
+            setMessage('Currently login. Please wait a bit');
         try {
             google();
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message); 
+                setMessage((error as any).response.data.message);
             } else if (error instanceof Error && error.message) {
                 setMessage(error.message);
             } else {
-                setMessage("An unknown error occurred.");
+                setMessage("An unknown error occurred with Google Sign-in.");
             }
         }
     };
 
     const handleAnimation = async (newClass1: string, newClass2: string) => {
-        setSloganAnimation(newClass1); 
-        setFormAnimation(newClass2); 
-        await new Promise(resolve => setTimeout(resolve, env.animate.fade * 1000)); 
-        setSloganAnimation(""); 
-        setFormAnimation(""); 
+        setSloganAnimation(newClass1);
+        setFormAnimation(newClass2);
+        await new Promise(resolve => setTimeout(resolve, env.animate.fade * 1000));
     };
 
+    const navigateToRegister = async () => {
+        if (window.innerWidth >= 1024) { 
+            await handleAnimation("animate-fade-out", "animate-float-left");
+        }
+        else    await handleAnimation("animate-fade-out", "animate-fade-out");
+        setState('register');
+        setMessage("");
+        setPwd("");
+    }
+
+    const navigateToForgot = async () => {
+        if (window.innerWidth >= 1024) {
+            await handleAnimation("animate-fade-out", "animate-float-left");
+        }
+        else    await handleAnimation("animate-fade-out", "animate-fade-out");
+        setState('forgot');
+        setMessage("");
+    }
+
     return (
-        <>
-            {/*Slogan side*/}
-            <div className={cn("w-2/5 flex flex-col justify-center items-center", sloganAnimation, initAnimation)}>
+        <div className="flex flex-col justify-center lg:flex-row w-full min-h-screen items-center">
+            <div className={cn(
+                "flex w-full lg:w-2/5 flex-col justify-center items-center p-8", 
+                sloganAnimation,
+                initAnimation 
+            )}>
                 <h1 className="text-4xl font-bold text-black">FLUFFYNET</h1>
                 <p className="text-lg text-gray-600">Your world, your stories</p>
             </div>
 
-            {/*Login side*/}
-            <div className={cn("w-3/5 flex justify-center items-center", formAnimation, initAnimation)}>
-                <div className="bg-white p-10 rounded-2xl shadow-lg w-[30vw] z-10 flex flex-col justify-center">
+            <div className={cn(
+                "w-full lg:w-3/5 flex flex-col justify-center items-center p-4 lg:p-0", 
+                formAnimation,
+                initAnimation
+            )}>
+                {/* Form Card */}
+                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-center">Welcome back</h2>
-                    <p className="text-gray-500 text-center mb-6">Access your personalized space by logging in below</p>
+                    
+                    <p className="text-gray-500 text-center mb-6">
+                        <span className="lg:hidden">Log in with your account</span>
+                        <span className="hidden lg:inline">Access your personalized space by logging in below</span>
+                    </p>
 
                     <div className="space-y-4">
-                        <InputForm 
+                        <InputForm
                             name="username" 
-                            icon="mail" 
-                            placeholder="Email or username" 
-                            className={'placeholder-gray-400'} 
+                            icon="mail"     
+                            placeholder="username or email" 
+                            className='placeholder-gray-400' 
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
                         />
-                        <InputForm 
+                        <InputForm
                             name="password"
-                            icon="lock" 
-                            type='password' 
-                            placeholder="Password" 
-                            className={'placeholder-gray-400'} 
+                            icon="lock"
+                            type='password'
+                            placeholder="Password"
+                            className='placeholder-gray-400'
                             value={pwd}
                             onChange={(e) => setPwd(e.target.value)}
                         />
                     </div>
 
-                    <button className="w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-4 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102" onClick={() => handleLogin()}>
-                        Sign in
+                    <button
+                        className={cn( 
+                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200 lg:hover:outline lg:hover:outline-black ",
+                        {"opacity-50 cursor-not-allowed": isLoading} 
+                        )}
+                        onClick={handleLogin}
+                        disabled={isLoading} 
+                    >
+                        {isLoading ? "Signing in..." : "Sign in"} 
                     </button>
-                
-                    <p className="text-yellow-500 text-center mt-2 text-sm cursor-pointer" onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('forgot')}}>
-                        Forgot your password? Click me
+
+                    <p
+                        className="text-yellow-500 text-center mt-4 text-sm cursor-pointer font-semibold" 
+                        onClick={navigateToForgot} 
+                    >
+                        Forgot your password 
                     </p>
 
-                    {message && <p className="text-red-500 text-center mt-2">{message}</p>}
+                    {message && (
+                        <p className={
+                            `text-center mt-3 text-sm ${
+                                (message.startsWith("Login successfully") || message.startsWith("Login Successful!"))
+                                    ? 'text-green-600' 
+                                    : 'text-red-500'   
+                            }`
+                        }
+                        >
+                            {message}
+                        </p>
+                    )}
 
-                    <div className="flex items-center my-4">
+                    <div className="flex items-center my-5">
                         <hr className="flex-grow border-yellow-400" />
-                            <span className="mx-2 text-yellow-500">or</span>
+                        <span className="mx-4 text-yellow-500 text-sm">or</span> 
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button 
-                        className="w-full bg-gray-200 text-black p-3 rounded-xl mb-2 hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102"
-                        onClick={async () => {await handleAnimation("animate-fade-out", "animate-float-left"), setState('register'), setMessage("")}}
+                    <button
+                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200" 
+                        onClick={navigateToRegister}
                     >
-                        Don't have an account? Sign up
+                        <span>Don't have an account? Sign up</span>
                     </button>
-                    
-                    <button 
-                        className="w-full flex items-center justify-center bg-gray-100 p-3 rounded-xl hover:outline hover:outline-black active:scale-95 transition-transform duration-400 hover:scale-102"
+
+                    <button
+                        className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-100 lg:hover:scale-102" 
                         onClick={handleGoogle}
                     >
                         <img src="src\assets\img\google.png" alt="Google" className="w-5 h-5 mr-2" />
                         Sign in with Google
                     </button>
-                </div>  
+                </div>
             </div>
-        </>
-    )
+        </div>
+    );
 }

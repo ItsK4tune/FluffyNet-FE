@@ -14,16 +14,13 @@ export function AuthCallback() {
             const decoded: any = jwtDecode(token); 
             const email = decoded.jwtPayload?.email;
 
-            console.log("Decoded JWT:", decoded);
-            console.log("Email:", email);
-
             if (email) {
                 Object.keys(localStorage).forEach((key) => {
                     if (key.startsWith("jwt:")) {
                         localStorage.removeItem(key);
                     }
                 });
-                localStorage.setItem(`jwt:${email}`, email); 
+                localStorage.setItem(`jwt:${email}`, token); 
             }
 
             navigate("/");
@@ -36,5 +33,5 @@ export function AuthCallback() {
         }
     }, [navigate]);
 
-    return <p>Đang xác thực...</p>;
+    return <></>
 }

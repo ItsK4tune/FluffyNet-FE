@@ -1,57 +1,85 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "../libs/utils";
 import { env } from "../libs";
+import { Link } from "react-router-dom"; 
+import { FloatingIconsBackground } from "./elements/floating-icon";
+
+const playfulMessages = [
+    "Whoopsie-daisy! Looks like you took a fluffy detour. Let's find your way back! ☁️",
+    "Lost in the pink clouds? No worries, just a little sparkle needed to get back on track! ✨",
+    "Oh my! It seems the path dissolved into cotton candy. Let's teleport you! 🍭",
+    "A mischievous breeze must've blown you here! Time to catch a friendly wind back! 🌬️",
+    "Are you collecting sparkly things off the main path? 😉 Let's get you back to the stories!",
+    "Looks like a path guarded by sleepy kittens! Let's tiptoe back to the entrance... 🐾",
+    "This secret garden is lovely, but the login portal awaits! Follow the butterflies! 🦋",
+    "Did you stumble upon a dream? Let's gently wake you up and head to login land! 💤",
+];
+
+const buttonTexts = [
+    "Beam Me Back!",
+    "Fluffy Escape!",
+    "To the Login Cloud!",
+    "Magic Portal!",
+    "Follow the Sparkles!",
+    "Teleport Home!",
+    "Find My Way!",
+];
 
 export const Return = () => {
     const [initAnimation, setInitAnimation] = useState("animate-fade-in");
     const [message, setMessage] = useState("");
+    const [buttonText, setButtonText] = useState("");
 
     useEffect(() => {
+        setMessage(playfulMessages[Math.floor(Math.random() * playfulMessages.length)]);
+        setButtonText(buttonTexts[Math.floor(Math.random() * buttonTexts.length)]);
+
         const timer = setTimeout(() => {
             setInitAnimation("");
-        }, env.animate.fade * 1000);
+        }, env.animate.fade * 1000 + 100); 
 
         return () => clearTimeout(timer);
     }, []);
 
-    const getRandomMessage = () => {
-        const messages = [
-            "Oops, you seem lost! But hey, no worries—press this button and let the magic happen!",
-            "Ah, a brave soul! Click this button and embark on a journey to clarity!",
-            "Lost in the digital jungle? Fear not, this button is your compass!",
-            "Well, aren't you a curious one? Hit this button and see where it takes you!",
-            "Feeling stuck? This button is your ticket to freedom—click it!",
-            "Oh no, trapped again? Don't panic, just press this button and escape!",
-            "Hey there, explorer! This button is your shortcut to the next adventure!",
-            "Confused? Don't be! This button is your guide to the promised land!",
-            "Lost in translation? This button speaks the universal language of escape!",
-            "Stuck in a loop? Break free with a single click of this magical button!",
-        ];
-        return messages[Math.floor(Math.random() * messages.length)];
-    };
-
-    useEffect(() => {
-        setMessage(getRandomMessage());
-    }, []);
-
-    const redirect = () => {
-        window.location.href = "/login";
-    }
+    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
 
     return (
-        <div className={cn("w-1/1 flex flex-col justify-center items-center", initAnimation)}>
-            <h1 className="text-4xl font-bold text-black mb-8">FLUFFYNET</h1>
+        <div className="flex flex-col justify-center items-center w-full min-h-screen bg-pink-100 p-4 relative">
+            <div className="absolute inset-0">
+                {floatingIconsMemo}
+            </div>
 
-            <h2 className="text-gray-800 text-center mb-6">
-                {message}
-            </h2>
+            <div className={cn(
+                "relative flex flex-col justify-center items-center text-center bg-white p-8 md:p-12 rounded-3xl shadow-xl max-w-lg z-10",
+                initAnimation 
+                )}
+                    style={{ backdropFilter: 'blur(5px)', backgroundColor: 'rgba(255, 255, 255, 0.85)' }}
+                    >
 
-            <button
-                onClick={redirect}
-                className="mt-4 px-6 py-3 bg-blue-500 text-white text-lg font-bold rounded-lg shadow-lg transition-all duration-300 hover:outline hover:outline-black hover:bg-blue-600 hover:scale-105 z-10"
-            >
-                Tunnel to the login page
-            </button>
+                    <h1 className="text-4xl md:text-5xl font-bold text-black mb-5" >
+                        FluffyNet <span className="text-2xl align-middle">☁️</span>
+                    </h1>
+
+                <p className="text-gray-600 text-lg mb-8 px-4">
+                    {message}
+                </p>
+
+                <Link
+                     to="/login"
+                    className={cn(
+                        "px-8 py-3 bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xl font-semibold rounded-full shadow-lg ",
+                        "transition-all duration-300 ease-in-out",
+                        "hover:shadow-xl hover:scale-105 hover:brightness-110",
+                        "active:scale-95 active:brightness-95",
+                        "z-10" 
+                    )}
+                >
+                    ✨ {buttonText} ✨
+                </Link>
+
+                {/* Có thể thêm một hình ảnh nhỏ/icon vui nhộn */}
+                <div className="mt-8 text-5xl opacity-50">🐾</div>
+            </div>
         </div>
     );
 };

@@ -74,6 +74,10 @@
   animation: floatLeft 0.5s ease-in-out forwards;
 }
 
+.animate-sparkle {
+  animation: sparkle-float linear infinite;
+}
+
 @keyframes floating {
   0% {
     transform: translateY(0px);
@@ -113,4 +117,10 @@
     transform: translateX(-30%);
     opacity: 0;
   }
+}
+
+@keyframes sparkle-float {
+  0% { transform: translateY(0px) scale(1); opacity: inherit; } 
+  50% { transform: translateY(-15px) scale(1.1); opacity: 0.9; }
+  100% { transform: translateY(0px) scale(1); opacity: inherit; } 
 }
