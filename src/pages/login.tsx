@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { FloatingIconsBackground } from "../components/elements/floating-icon"
-import { LoginForm } from "../components/login-form";
-import { RegisterForm } from "../components/register-form";
-import { ForgotPasswordForm } from "../components/forgot-password-form";
+import { LoginForm } from "../components/authen/login-form";
+import { RegisterForm } from "../components/authen/register-form";
+import { ForgotPasswordForm } from "../components/authen/forgot-password-form";
 
 export const Login = () => {
     const [user, setUser] = useState('');

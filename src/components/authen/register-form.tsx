@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { InputForm } from "./elements/input-form"; // Assuming responsive
-import { register } from "../services/login/register";
-import { env } from "../libs";
-import { cn } from "../libs/utils";
-import { google } from "../services/login/google";
+import { InputForm } from "../elements/input-form";
+import { register } from "../../services/authen/register";
+import { env } from "../../libs";
+import { cn } from "../../libs/utils";
+import { google } from "../../services/authen/google";
 
 interface RegisterFormProps {
     user: string;
@@ -51,8 +51,8 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
                 ),
             ]);
 
-            const response = await registerWithTimeout;
-            setMessage((response as { message?: string })?.message || "Registration successful! Please log in.")
+            await registerWithTimeout;
+            setMessage("Registration successful! Please log in.")
             await new Promise(resolve => setTimeout(resolve, 1500));
             setPwd("");
             await navigateToLogin()
@@ -110,7 +110,7 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
                         <InputForm
                             name="username"
                             icon="mail"
-                            placeholder="username" 
+                            placeholder="Username" 
                             className={'placeholder-gray-400'}
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
@@ -149,7 +149,7 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
                     {message && (
                         <p className={
                             `text-center mt-3 text-sm ${
-                                (message.startsWith("Registration") || message.startsWith("User created successfully"))
+                                (message.startsWith("Registration"))
                                     ? 'text-green-600' 
                                     : 'text-red-500'   
                             }`

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { InputForm } from "./elements/input-form";
-import { env } from "../libs";
-import { cn } from "../libs/utils";
-import { resetPassword } from "../services/reset-password/reset-password";
+import { InputForm } from "../elements/input-form";
+import { env } from "../../libs";
+import { cn } from "../../libs/utils";
+import { resetPassword } from "../../services/authen/reset-password";
 import { useNavigate } from "react-router-dom";
 
 interface ResetPasswordFormProps {
@@ -41,8 +41,8 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
             }
 
             setIsLoading(true);
-            const response = await resetPassword(pwd, token);
-            setMessage((response as { data?: { message?: string } }).data?.message || "Password reset successfully!");
+            await resetPassword(pwd, token);
+            setMessage("Password reset successfully!");
             await new Promise(resolve => setTimeout(resolve, 1500));
             await navigateToLogin();
         } catch (error) {
@@ -110,7 +110,7 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
                     {message && (
                         <p className={
                             `text-center mt-3 text-sm ${
-                                (message.startsWith("Password reset successfully!") || message.startsWith("New password set"))
+                                (message.startsWith("Password reset successfully!"))
                                     ? 'text-green-600' 
                                     : 'text-red-500'   
                             }`

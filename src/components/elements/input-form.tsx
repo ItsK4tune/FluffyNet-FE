@@ -27,7 +27,7 @@ export const InputForm = ({
                 name={name}  
                 type={type}
                 placeholder={placeholder}
-                className={cn('w-full', className)}
+                className={cn('w-full border-none bg-transparent focus:outline-none ', className)}
                 value={value}
                 onChange={onChange}
             />

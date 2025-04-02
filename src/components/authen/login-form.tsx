@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { login } from "../services/login/login";
-import { InputForm } from "./elements/input-form"; // Assuming this is responsive or styles adapt
-import { cn } from "../libs/utils";
-import { env } from "../libs";
-import { google } from "../services/login/google";
+import { login } from "../../services/authen/login";
+import { InputForm } from "../elements/input-form";
+import { cn } from "../../libs/utils";
+import { env } from "../../libs";
+import { google } from "../../services/authen/google";
 import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
@@ -65,7 +65,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     }
                 });
                 localStorage.setItem(`jwt:${user}`, token); 
-                setMessage((response as { data?: { message?: string } }).data?.message || "Login Successful!");
+                setMessage("Login Successful!");
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 await handleAnimation("animate-fade-out", "animate-fade-out");
                 navigate('/');
@@ -113,6 +113,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
         else    await handleAnimation("animate-fade-out", "animate-fade-out");
         setState('register');
         setMessage("");
+        setUser("");
         setPwd("");
     }
 
@@ -141,7 +142,6 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                 formAnimation,
                 initAnimation
             )}>
-                {/* Form Card */}
                 <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-center">Welcome back</h2>
                     
@@ -154,7 +154,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         <InputForm
                             name="username" 
                             icon="mail"     
-                            placeholder="username or email" 
+                            placeholder="Username or email" 
                             className='placeholder-gray-400' 
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
@@ -191,7 +191,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     {message && (
                         <p className={
                             `text-center mt-3 text-sm ${
-                                (message.startsWith("Login successfully") || message.startsWith("Login Successful!"))
+                                (message.startsWith("Login Successful!"))
                                     ? 'text-green-600' 
                                     : 'text-red-500'   
                             }`

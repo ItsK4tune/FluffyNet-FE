@@ -12,7 +12,7 @@ export function AuthCallback() {
         if (token) {
         try {
             const decoded: any = jwtDecode(token); 
-            const email = decoded.jwtPayload?.email;
+            const email = decoded.user?.email;
 
             if (email) {
                 Object.keys(localStorage).forEach((key) => {

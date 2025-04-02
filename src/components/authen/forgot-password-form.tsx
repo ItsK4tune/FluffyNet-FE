@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { cn } from "../libs/utils"
-import { InputForm } from "./elements/input-form"
-import { env } from "../libs";
-import { forgotPassword } from "../services/login/forgot-password"; 
+import { cn } from "../../libs/utils";
+import { InputForm } from "../elements/input-form";
+import { env } from "../../libs";
+import { forgotPassword } from "../../services/authen/forgot-password";
 
 interface ForgotPasswordFormProps {
     message: string;
