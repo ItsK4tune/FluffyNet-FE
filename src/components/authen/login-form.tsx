@@ -172,7 +172,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
 
                     <button
                         className={cn( 
-                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200 lg:hover:outline lg:hover:outline-black ",
+                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200",
                         {"opacity-50 cursor-not-allowed": isLoading} 
                         )}
                         onClick={handleLogin}
@@ -207,20 +207,27 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
+                    {/* <button
                         className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200" 
                         onClick={navigateToRegister}
                     >
                         <span>Don't have an account? Sign up</span>
-                    </button>
+                    </button> */}
 
                     <button
-                        className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-100 lg:hover:scale-102" 
+                        className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-200 lg:hover:scale-102" 
                         onClick={handleGoogle}
                     >
                         <img src="src\assets\img\google.png" alt="Google" className="w-5 h-5 mr-2" />
                         Sign in with Google
                     </button>
+
+                    <p
+                        className="text-gray-500 text-center mt-4 text-sm cursor-pointer font-semibold hover:text-black" 
+                        onClick={navigateToRegister} 
+                    >
+                        Don't have an account? Sign up 
+                    </p>
                 </div>
             </div>
         </div>

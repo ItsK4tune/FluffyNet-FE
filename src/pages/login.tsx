@@ -30,7 +30,7 @@ export const Login = () => {
     };
     
     return (
-        <div className="flex h-screen bg-pink-100">
+        <div className="flex h-screen bg-pink-200">
             {/* Background animated icons */}
             <div className="absolute inset-0">
                 {floatingIconsMemo}

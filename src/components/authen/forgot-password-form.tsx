@@ -66,12 +66,6 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
         setState('login');
     }
 
-    const navigateToRegister = async () => {
-        setAnimation('animate-fade-out');
-        await new Promise(resolve => setTimeout(resolve, env.animate.fade * 1000)); 
-        setState('register');
-    }
-
     return (
         <div className="flex flex-col justify-center lg:flex-row lg:justify-start w-full min-h-screen items-center">
             <div className={cn(
@@ -113,7 +107,7 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
 
                     <button
                         className={cn( 
-                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200 lg:hover:outline lg:hover:outline-black ",
+                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200",
                         {"opacity-50 cursor-not-allowed": isLoading} 
                         )}
                         onClick={handleForgot}
@@ -128,19 +122,19 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200"
+                    {/* <button
+                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-300"
                         onClick={navigateToLogin} 
                     >
-                            Already have an account? Sign in
-                    </button>
+                        Back to Login
+                    </button> */}
 
-                    <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-100"
-                        onClick={navigateToRegister} 
+                    <p
+                        className="text-gray-500 text-center text-sm cursor-pointer font-semibold hover:text-black transition-colors duration-200"
+                        onClick={navigateToLogin}
                     >
-                        Don't have an account? Sign up
-                    </button>
+                        Remember your password? Back to Login
+                    </p>
                 </div>
             </div>
         </div>

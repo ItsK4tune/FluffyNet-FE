@@ -137,12 +137,19 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
+                    {/* <button
                         className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200 lg:hover:scale-102"
                         onClick={navigateToLogin}
                     >
                         Remember your password? Sign in
-                    </button>
+                    </button> */}
+
+                    <p
+                        className="text-gray-500 text-center text-sm cursor-pointer font-semibold hover:text-black transition-colors duration-200"
+                        onClick={navigateToLogin}
+                    >
+                        Remember your password? Back to Login
+                    </p>
                 </div>
             </div>
         </div>
