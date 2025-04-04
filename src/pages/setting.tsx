@@ -114,19 +114,19 @@ export const Setting = () => {
         setIsLoggingOut(true);
         setMessage({ text: '', type: 'error' });
         try {
-             console.log("Attempting logout...");
-             await logout();
-             console.log("Logout successful, navigating to login.");
-             navigate('/login');
-         } catch (error: any) {
-             console.error("Logout failed:", error);
-             setMessage({
-                 text: `Logout failed: ${error?.response?.data?.message || error?.message || 'Please try again.'}`,
-                 type: 'error'
-             });
-         } finally {
-             setIsLoggingOut(false);
-         }
+            console.log("Attempting logout...");
+            await logout();
+            console.log("Logout successful, navigating to login.");
+            navigate('/login', { replace: true });
+        } catch (error: any) {
+            console.error("Logout failed:", error);
+            setMessage({
+                text: `Logout failed: ${error?.response?.data?.message || error?.message || 'Please try again.'}`,
+                type: 'error'
+            });
+        } finally {
+            setIsLoggingOut(false);
+        }
     };
 
     // --- COMPONENTS CON ---

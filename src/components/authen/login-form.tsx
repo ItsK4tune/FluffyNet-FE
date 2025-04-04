@@ -5,6 +5,7 @@ import { cn } from "../../libs/utils";
 import { env } from "../../libs";
 import { google } from "../../services/authen/google";
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from "../../stores/auth-store";
 
 interface LoginFormProps {
     user: string;
@@ -23,14 +24,15 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+    // const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
-    useEffect(() => {
-        Object.keys(localStorage).forEach((key) => {
-            if (key.startsWith("jwt:")) {
-                navigate('/');
-            }
-        });
-    }, []);
+    // useEffect(() => {
+    //     console.log(isAuthenticated);
+    //     if (isAuthenticated) {
+    //         console.log("LoginForm: User is already authenticated, navigating to home.");
+    //         navigate('/');
+    //     }
+    // }, [isAuthenticated, navigate]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -56,22 +58,11 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     setTimeout(() => reject(new Error("Request timeout!")), 5000)
                 ),
             ]);
-            const response = await loginWithTimeout;
-            const token = (response as { data?: { token?: string } }).data?.token;
-            if (token) {
-                Object.keys(localStorage).forEach((key) => {
-                    if (key.startsWith("jwt:")) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                localStorage.setItem(`jwt:${user}`, token); 
-                setMessage("Login Successful!");
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                await handleAnimation("animate-fade-out", "animate-fade-out");
-                navigate('/');
-            } else {
-                throw new Error("Login failed. Token not received."); 
-            }
+            await loginWithTimeout;
+            setMessage("Login Successful!");
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            await handleAnimation("animate-fade-out", "animate-fade-out");
+            navigate('/');
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
                 setMessage((error as any).response.data.message);
