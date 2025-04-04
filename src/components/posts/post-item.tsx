@@ -2,7 +2,8 @@ import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { Avatar } from "../elements/avatar";
-import useCurrentUser from "../../hooks/useCurrentUser";
+import EditItem from "./edit-item";
+import DeleteItem from "./delete-item";
 
 interface Post {
     post_id: number;
@@ -21,8 +22,6 @@ interface PostItemProps {
 }
 
 export const PostItem: React.FC<PostItemProps> = ({ data, user_id }) => {
-    const { data: currentUser } = useCurrentUser();
-
     const goToUser = useCallback(() => {
 
     }, []);
@@ -95,6 +94,8 @@ export const PostItem: React.FC<PostItemProps> = ({ data, user_id }) => {
                         >
                             <AiOutlineMessage size={20} />
                         </div>
+                        <EditItem />
+                        <DeleteItem />
                     </div>
                 </div>
 
