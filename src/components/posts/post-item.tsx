@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
-import { Avatar } from "./elements/avatar";
+import { Avatar } from "../elements/avatar";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 interface Post {
     post_id: number;
@@ -16,10 +17,11 @@ interface Post {
 
 interface PostItemProps {
     data: Post;
-    user_id: number;
+    user_id?: number;
 }
 
 export const PostItem: React.FC<PostItemProps> = ({ data, user_id }) => {
+    const { data: currentUser } = useCurrentUser();
 
     const goToUser = useCallback(() => {
 
