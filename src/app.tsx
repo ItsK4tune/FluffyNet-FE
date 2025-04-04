@@ -45,7 +45,7 @@ export const App = () => {
                     try {
                          console.log("App Mount: Fetching user status (direct axios)...");
                          const response = await axios.get(`${env.be.url}/api/auth/status`, {
-                              headers: { 'Authorization': `Bearer ${token}` }, 
+                              headers: { Authorization: `Bearer ${token}` }, 
                               withCredentials: true
                          });
                          if (response.data?.isAuthenticated && response.data?.user) {
@@ -57,7 +57,6 @@ export const App = () => {
                          return null;
                     }
                };
-
 
                const newAccessToken = await tryRefreshToken(); 
 

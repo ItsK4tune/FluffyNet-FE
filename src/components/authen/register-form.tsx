@@ -3,7 +3,6 @@ import { InputForm } from "../elements/input-form";
 import { register } from "../../services/authen/register";
 import { env } from "../../libs";
 import { cn } from "../../libs/utils";
-import { google } from "../../services/authen/google";
 
 interface RegisterFormProps {
     user: string;
@@ -70,9 +69,10 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
 
     const handleGoogle = async () => {
         if (isLoading)
-            setMessage('Currently register. Please wait a bit');
+            setMessage('Currently login. Please wait a bit');
         try {
-            google();
+            const googleAuthUrl = `${env.be.url}/api/auth/google`;
+            window.location.href = googleAuthUrl;
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
                 setMessage((error as any).response.data.message);

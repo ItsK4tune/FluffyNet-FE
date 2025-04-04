@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from 'axios'; // Import axios trực tiếp
-import { env } from "../libs"; // Giả sử env có baseURL backend
+import axios from 'axios';
+import { env } from "../libs"; 
 import { FloatingIconsBackground } from "../components/elements/floating-icon";
 import { useAuthStore } from "../stores/auth-store";
-// import { Return } from "../components/elements/return"; // Component bạn dùng khi có lỗi
 
 export const Callback = () => {
     const [searchParams] = useSearchParams();

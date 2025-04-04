@@ -3,9 +3,7 @@ import { login } from "../../services/authen/login";
 import { InputForm } from "../elements/input-form";
 import { cn } from "../../libs/utils";
 import { env } from "../../libs";
-import { google } from "../../services/authen/google";
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from "../../stores/auth-store";
 
 interface LoginFormProps {
     user: string;
@@ -24,15 +22,6 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
-    // const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
-    // useEffect(() => {
-    //     console.log(isAuthenticated);
-    //     if (isAuthenticated) {
-    //         console.log("LoginForm: User is already authenticated, navigating to home.");
-    //         navigate('/');
-    //     }
-    // }, [isAuthenticated, navigate]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -79,7 +68,8 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
         if (isLoading)
             setMessage('Currently login. Please wait a bit');
         try {
-            google();
+            const googleAuthUrl = `${env.be.url}/api/auth/google`;
+            window.location.href = googleAuthUrl;
         } catch (error) {
             if ((error as any)?.response?.data?.message) {
                 setMessage((error as any).response.data.message);

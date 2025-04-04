@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "reset-password", element: <ResetPassword /> },
       { path: "verify", element: <VerifyEmail /> }, 
-      { path: "google/callback", element: <Callback />},
+      { path: "callback", element: <Callback />},
     ],
   },
 ]);

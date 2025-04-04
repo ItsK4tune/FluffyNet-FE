@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // --- IMPORT FUNCTIONS ---
 import { logout } from '../services/authen/logout';
 import { bindEmail } from '../services/authen/bind-email';
+import { useAuthStore } from '../stores/auth-store';
 
 // Placeholder - nên lấy từ API hoặc context/store khi có
 const initialUserData = {
@@ -23,17 +24,6 @@ interface UserData {
     bio: string;
     email: string | null; // Email có thể null
 }
-
-// Hàm lấy token (đặt ở đây hoặc import từ utils)
-const getAuthToken = (): string | null => {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith("jwt:")) {
-            return localStorage.getItem(key);
-        }
-    }
-    return null;
-};
 
 export const Setting = () => {
     const navigate = useNavigate();
@@ -78,7 +68,7 @@ export const Setting = () => {
             return;
         }
 
-        const token = getAuthToken();
+        const token = useAuthStore.getState().accessToken; 
         if (!token) {
             setMessage({ text: 'Authentication token not found. Please log in again.', type: 'error' });
             setIsBindingEmail(false);
