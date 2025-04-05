@@ -3,6 +3,7 @@ import { InputForm } from "../elements/input-form";
 import { register } from "../../services/authen/register";
 import { env } from "../../libs";
 import { cn } from "../../libs/utils";
+import axios from "axios";
 
 interface RegisterFormProps {
     user: string;
@@ -55,14 +56,25 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
             await new Promise(resolve => setTimeout(resolve, 1500));
             setPwd("");
             await navigateToLogin()
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred during registration.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during register."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many register attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
             setIsLoading(false);
         }
     };
@@ -73,14 +85,26 @@ export const RegisterForm = ({ user, setUser, pwd, setPwd, message, setMessage, 
         try {
             const googleAuthUrl = `${env.be.url}/api/auth/google`;
             window.location.href = googleAuthUrl;
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred with Google Sign-in.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during register."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many register attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
+            setIsLoading(false);
         }
     };
 

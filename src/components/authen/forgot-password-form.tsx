@@ -3,6 +3,7 @@ import { cn } from "../../libs/utils";
 import { InputForm } from "../elements/input-form";
 import { env } from "../../libs";
 import { forgotPassword } from "../../services/authen/forgot-password";
+import axios from "axios";
 
 interface ForgotPasswordFormProps {
     message: string;
@@ -47,14 +48,26 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                 ),
             ]);
             setMessage("A password reset link has been sent.");
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
+            setIsLoading(false);
         } finally {
             setIsLoading(false);
         }

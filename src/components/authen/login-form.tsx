@@ -4,6 +4,7 @@ import { InputForm } from "../elements/input-form";
 import { cn } from "../../libs/utils";
 import { env } from "../../libs";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 interface LoginFormProps {
     user: string;
@@ -52,14 +53,25 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
             await new Promise(resolve => setTimeout(resolve, 1500));
             await handleAnimation("animate-fade-out", "animate-fade-out");
             navigate('/');
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred during login.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during login."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many login attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
             setIsLoading(false);
         }
     };
@@ -70,14 +82,26 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
         try {
             const googleAuthUrl = `${env.be.url}/api/auth/google`;
             window.location.href = googleAuthUrl;
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred with Google Sign-in.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during login."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many login attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
+            setIsLoading(false);
         }
     };
 

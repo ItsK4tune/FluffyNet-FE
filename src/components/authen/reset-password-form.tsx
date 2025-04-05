@@ -4,6 +4,7 @@ import { env } from "../../libs";
 import { cn } from "../../libs/utils";
 import { resetPassword } from "../../services/authen/reset-password";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface ResetPasswordFormProps {
     pwd: string;
@@ -45,14 +46,25 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
             setMessage("Password reset successfully!");
             await new Promise(resolve => setTimeout(resolve, 1500));
             await navigateToLogin();
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred while resetting the password.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during reset password."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
             setIsLoading(false);
         }
     }

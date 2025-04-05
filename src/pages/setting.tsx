@@ -107,6 +107,8 @@ export const Setting = () => {
             console.log("Attempting logout...");
             await logout();
             console.log("Logout successful, navigating to login.");
+            setMessage({ text: 'Logged out successfully! See you next time! 👋', type: 'success' });
+            await new Promise(resolve => setTimeout(resolve, 5000));
             navigate('/login', { replace: true });
         } catch (error: any) {
             console.error("Logout failed:", error);
