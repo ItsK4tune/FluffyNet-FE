@@ -78,6 +78,10 @@
   animation: sparkle-float linear infinite;
 }
 
+.animate-gradient {
+  animation: gradientAnimation 15s ease infinite;
+}
+
 @keyframes floating {
   0% {
     transform: translateY(0px);
@@ -124,3 +128,10 @@
   50% { transform: translateY(-15px) scale(1.1); opacity: 0.9; }
   100% { transform: translateY(0px) scale(1); opacity: inherit; } 
 }
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+

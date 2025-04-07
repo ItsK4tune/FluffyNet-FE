@@ -5,6 +5,8 @@ import { Return } from "../components/elements/return";
 import { cn } from "../libs/utils";
 import { env } from "../libs";
 import { verifyEmail } from "../services/authen/verify";
+import { ParticlesBackground } from "../components/elements/particle";
+import { AnimatedGradientBackground } from "../components/elements/gradient-background";
 
 export const VerifyEmail = () => {
     const [initAnimation, setInitAnimation] = useState('animate-fade-in');
@@ -13,7 +15,13 @@ export const VerifyEmail = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
 
-    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+    const background = useMemo(() => (
+        <>
+            <FloatingIconsBackground />,
+            <AnimatedGradientBackground />,
+            <ParticlesBackground />
+        </>
+    ), []);
 
     if (!token) {
         return (
@@ -49,9 +57,9 @@ export const VerifyEmail = () => {
     }, [token]);
 
     return (
-        <div className="flex h-screen bg-pink-100">
+        <div className="relative flex h-screen overflow-hidden"> 
             <div className="absolute inset-0">
-                {floatingIconsMemo}
+                {background}
             </div>
 
             <div className="flex flex-col justify-center lg:flex-row lg:justify-start w-full min-h-screen items-center">

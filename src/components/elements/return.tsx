@@ -3,6 +3,8 @@ import { cn } from "../../libs/utils";
 import { env } from "../../libs";
 import { Link } from "react-router-dom"; 
 import { FloatingIconsBackground } from "./floating-icon";
+import { AnimatedGradientBackground } from "./gradient-background";
+import { ParticlesBackground } from "./particle";
 
 const playfulMessages = [
     "Whoopsie-daisy! Looks like you took a fluffy detour. Let's find your way back! ☁️",
@@ -41,12 +43,18 @@ export const Return = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+    const background = useMemo(() => (
+        <>
+            <FloatingIconsBackground />,
+            <AnimatedGradientBackground />,
+            <ParticlesBackground />
+        </>
+    ), []);
 
     return (
-        <div className="flex flex-col justify-center items-center w-full min-h-screen bg-pink-100 p-4 relative">
+        <div className="relative flex flex-col justify-center items-center h-screen overflow-hidden"> 
             <div className="absolute inset-0">
-                {floatingIconsMemo}
+                {background}
             </div>
 
             <div className={cn(

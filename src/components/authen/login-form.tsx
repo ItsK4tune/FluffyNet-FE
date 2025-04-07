@@ -60,6 +60,19 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                 if (error.response?.status === 429) {
                     displayMessage = "Too many login attempts. Please wait a minute and try again.";
                 }
+                if (error.response?.status === 403) {
+                    if (error.response?.data?.reason && error.response?.data?.until) { 
+                        if (!error.response?.data?.reason) {
+                            displayMessage = 'Your account is suspended.';
+                        } else {
+                            displayMessage = `Your account is suspended. Reason: ${error.response.data.reason}. Suspended until: ${error.response.data.until}.`;
+                        }
+                    } else if (error.message) {
+                        displayMessage = `You have been banned. Reason: ${error.response.data.message}.`;
+                    } else {
+                        displayMessage = 'You have been banned.';
+                    }
+                }
                 else if (error.response?.data?.message) {
                     displayMessage = error.response.data.message;
                 }

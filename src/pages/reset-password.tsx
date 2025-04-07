@@ -3,12 +3,20 @@ import { FloatingIconsBackground } from "../components/elements/floating-icon";
 import { ResetPasswordForm } from "../components/authen/reset-password-form";
 import { useSearchParams } from "react-router-dom";
 import { Return } from "../components/elements/return";
+import { ParticlesBackground } from "../components/elements/particle";
+import { AnimatedGradientBackground } from "../components/elements/gradient-background";
 
 export const ResetPassword = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
 
-    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+    const background = useMemo(() => (
+        <>
+            <FloatingIconsBackground />,
+            <AnimatedGradientBackground />,
+            <ParticlesBackground />
+        </>
+    ), []);
 
     if (!token) {
         return (
@@ -24,9 +32,9 @@ export const ResetPassword = () => {
     }, [pwd])
 
     return (
-        <div className="flex h-screen bg-pink-100">
+        <div className="relative flex h-screen overflow-hidden"> 
             <div className="absolute inset-0">
-                {floatingIconsMemo}
+                {background}
             </div>
 
             <ResetPasswordForm pwd={pwd} setPwd={setPwd} message={message} setMessage={setMessage} token={token} />

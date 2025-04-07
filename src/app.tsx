@@ -26,10 +26,15 @@ export const App = () => {
                const tryRefreshToken = async (): Promise<string | null> => {
                     try {
                          console.log("App Mount: Attempting refresh (direct axios)...");
-                         const response = await axios.get<{ accessToken: string }>(`${env.be.url}/api/auth/refresh`, { 
-                              withCredentials: true 
-                         });
-                         return response.data.accessToken;
+                         const response = await Promise.race([
+                              axios.get<{ accessToken: string }>(`${env.be.url}/api/auth/refresh`, { 
+                                   withCredentials: true 
+                              }) as Promise<{ data: { accessToken: string } }>,
+                              new Promise((_, reject) =>
+                                   setTimeout(() => reject(new Error("Request timeout!")), 3000)
+                              ),
+                         ]);
+                         return (response as { data: { accessToken: string } }).data.accessToken;
                     } catch (error) {
                          if (axios.isAxiosError(error) && error.response?.status === 401) {
                               console.log("App Mount: Refresh failed (401 - direct axios). No valid session.");
@@ -44,12 +49,18 @@ export const App = () => {
                     if (!token) return null;
                     try {
                          console.log("App Mount: Fetching user status (direct axios)...");
-                         const response = await axios.get(`${env.be.url}/api/auth/status`, {
-                              headers: { Authorization: `Bearer ${token}` }, 
-                              withCredentials: true
-                         });
-                         if (response.data?.isAuthenticated && response.data?.user) {
-                              return response.data.user;
+                         const response = await Promise.race([
+                              axios.get(`${env.be.url}/api/auth/status`, {
+                                   headers: { Authorization: `Bearer ${token}` }, 
+                                   withCredentials: true
+                              }) as Promise<{ data: { accessToken: string } }>,
+                              new Promise((_, reject) =>
+                                   setTimeout(() => reject(new Error("Request timeout!")), 3000)
+                              ),
+                         ]);
+                         const formatedResponse = response as { data: { isAuthenticated: boolean; user: any } };
+                         if (formatedResponse.data?.isAuthenticated && formatedResponse.data?.user) {
+                              return formatedResponse.data.user;
                          }
                          return null; 
                     } catch (error) {
@@ -81,7 +92,6 @@ export const App = () => {
                     }
                     setLoading(false);
                }
-
           }; 
 
           if (isLoading) {
@@ -108,5 +118,6 @@ export const App = () => {
                return <Navigate to="/login" state={{ from: location }} replace />;
           }
      }
+     
      return <Outlet />;
 };

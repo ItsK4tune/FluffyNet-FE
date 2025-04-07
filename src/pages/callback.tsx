@@ -4,6 +4,8 @@ import axios from 'axios';
 import { env } from "../libs"; 
 import { FloatingIconsBackground } from "../components/elements/floating-icon";
 import { useAuthStore } from "../stores/auth-store";
+import { AnimatedGradientBackground } from "../components/elements/gradient-background";
+import { ParticlesBackground } from "../components/elements/particle";
 
 export const Callback = () => {
     const [searchParams] = useSearchParams();
@@ -11,7 +13,13 @@ export const Callback = () => {
     const navigate = useNavigate();
     const { setAccessToken, setUser, setLoading } = useAuthStore();
 
-    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+    const background = useMemo(() => (
+            <>
+                <FloatingIconsBackground />,
+                <AnimatedGradientBackground />,
+                <ParticlesBackground />
+            </>
+        ), []);
 
     useEffect(() => {
         let isMounted = true;
@@ -72,9 +80,9 @@ export const Callback = () => {
     }, [searchParams, navigate, setAccessToken, setUser, setLoading, accessToken]); 
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-pink-100 text-center">
+        <div className="relative flex h-screen overflow-hidden"> 
            <div className="absolute inset-0 -z-10">
-                {floatingIconsMemo}
+                {background}
             </div>
            <div className="p-6 bg-white rounded-lg shadow-md">
                 <h1 className="text-2xl font-semibold mb-4">Processing Authentication...</h1>
