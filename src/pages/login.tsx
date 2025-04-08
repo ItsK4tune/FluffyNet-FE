@@ -47,23 +47,20 @@ export const Login = () => {
         }
 
         if (displayMessage) {
+            
             const nextParams = new URLSearchParams(searchParams.toString());
             nextParams.delete('type');
             nextParams.delete('message');
             nextParams.delete('until');
             setSearchParams(nextParams, { replace: true });
-            alert(displayMessage);
+            setMessage(displayMessage);
         }
     }, []);
 
-    useEffect(() => {
-        setMessage('');
-    }, [user, pwd]);
-
     const background = useMemo(() => (
         <>
-            <FloatingIconsBackground />,
-            <AnimatedGradientBackground />,
+            <FloatingIconsBackground />
+            <AnimatedGradientBackground />
             <ParticlesBackground />
         </>
     ), []);

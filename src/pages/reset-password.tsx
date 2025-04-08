@@ -12,8 +12,8 @@ export const ResetPassword = () => {
 
     const background = useMemo(() => (
         <>
-            <FloatingIconsBackground />,
-            <AnimatedGradientBackground />,
+            <FloatingIconsBackground />
+            <AnimatedGradientBackground />
             <ParticlesBackground />
         </>
     ), []);

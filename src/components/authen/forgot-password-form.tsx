@@ -86,7 +86,7 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                 animation, 
                 initAnimation 
             )}>
-                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
+                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-center">Forgot Password?</h2> 
                     <p className="text-gray-500 text-center mb-6"> 
                         <span className="lg:hidden">Enter your email to get a reset link.</span>
@@ -135,18 +135,14 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    {/* <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-300"
-                        onClick={navigateToLogin} 
-                    >
-                        Back to Login
-                    </button> */}
-
-                    <p
-                        className="text-gray-500 text-center text-sm cursor-pointer font-semibold hover:text-black transition-colors duration-200"
-                        onClick={navigateToLogin}
-                    >
-                        Remember your password? Back to Login
+                    <p className="text-gray-500 text-center mt-2 text-sm font-semibold">
+                        Remember your password?{' '}
+                        <span
+                            className="font-semibold cursor-pointer hover:text-black"
+                            onClick={navigateToLogin}
+                        >
+                            Back to sign in.
+                        </span>
                     </p>
                 </div>
             </div>

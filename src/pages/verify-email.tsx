@@ -17,8 +17,8 @@ export const VerifyEmail = () => {
 
     const background = useMemo(() => (
         <>
-            <FloatingIconsBackground />,
-            <AnimatedGradientBackground />,
+            <FloatingIconsBackground />
+            <AnimatedGradientBackground />
             <ParticlesBackground />
         </>
     ), []);

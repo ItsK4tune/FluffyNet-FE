@@ -160,7 +160,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                 formAnimation,
                 initAnimation
             )}>
-                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
+                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-center">Welcome back</h2>
                     
                     <p className="text-gray-500 text-center mb-6">
@@ -198,13 +198,13 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     >
                         {isLoading ? "Signing in..." : "Sign in"} 
                     </button>
-
-                    <p
-                        className="text-yellow-500 text-center mt-4 text-sm cursor-pointer font-semibold" 
-                        onClick={navigateToForgot} 
+                   
+                    <span 
+                        onClick={navigateToForgot}
+                        className="cursor-pointer font-semibold hover:text-yellow-600 text-yellow-500 text-center mt-4 text-sm font-semibold"
                     >
-                        Forgot your password 
-                    </p>
+                        Forgot your password?
+                    </span>
 
                     {message && (
                         <p className={
@@ -225,13 +225,6 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    {/* <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200" 
-                        onClick={navigateToRegister}
-                    >
-                        <span>Don't have an account? Sign up</span>
-                    </button> */}
-
                     <button
                         className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-200 lg:hover:scale-102" 
                         onClick={handleGoogle}
@@ -240,11 +233,14 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         Sign in with Google
                     </button>
 
-                    <p
-                        className="text-gray-500 text-center mt-4 text-sm cursor-pointer font-semibold hover:text-black" 
-                        onClick={navigateToRegister} 
-                    >
-                        Don't have an account? Sign up 
+                    <p className="text-gray-500 text-center mt-4 text-sm font-semibold">
+                        Don't have an account?{' '}
+                        <span
+                            className="font-semibold cursor-pointer hover:text-black"
+                            onClick={navigateToRegister}
+                        >
+                            Sign up here!
+                        </span>
                     </p>
                 </div>
             </div>

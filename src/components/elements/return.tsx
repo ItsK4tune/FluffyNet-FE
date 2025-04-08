@@ -45,8 +45,8 @@ export const Return = () => {
 
     const background = useMemo(() => (
         <>
-            <FloatingIconsBackground />,
-            <AnimatedGradientBackground />,
+            <FloatingIconsBackground />
+            <AnimatedGradientBackground />
             <ParticlesBackground />
         </>
     ), []);
@@ -65,27 +65,21 @@ export const Return = () => {
                     >
 
                     <h1 className="text-4xl md:text-5xl font-bold text-black mb-5" >
-                        FluffyNet <span className="text-2xl align-middle">☁️</span>
+                        FluffyNet
                     </h1>
 
                 <p className="text-gray-600 text-lg mb-8 px-4">
                     {message}
                 </p>
 
-                <Link
-                    to="/login"
-                    className={cn(
-                        "px-8 py-3 bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xl font-semibold rounded-full shadow-lg ",
-                        "transition-all duration-300 ease-in-out",
-                        "hover:shadow-xl hover:scale-105 hover:brightness-110",
-                        "active:scale-95 active:brightness-95",
-                        "z-10" 
-                    )}
-                >
-                    {buttonText}
-                </Link>
-
-                <div className="mt-8 text-5xl opacity-50">🐾</div>
+                <span className="cursor-pointer font-semibold hover:text-black text-gray-500 text-center text-bg font-semibold"> 
+                    <Link
+                        to="/login"
+                    >
+                        {buttonText}
+                    </Link>
+                    <span className="text-4xl opacity-50">🐾</span>
+                </span>
             </div>
         </div>
     );

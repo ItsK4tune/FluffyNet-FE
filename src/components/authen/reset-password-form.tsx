@@ -91,7 +91,7 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
                 initAnimation,
                 animation,
             )}>
-                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
+                <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-left lg:text-center">Reset Password</h2>
                     <p className="text-gray-500 text-left lg:text-center mb-6">
                         <span className="lg:hidden">Enter and confirm your new password.</span>

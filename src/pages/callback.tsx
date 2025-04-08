@@ -14,12 +14,12 @@ export const Callback = () => {
     const { setAccessToken, setUser, setLoading } = useAuthStore();
 
     const background = useMemo(() => (
-            <>
-                <FloatingIconsBackground />,
-                <AnimatedGradientBackground />,
-                <ParticlesBackground />
-            </>
-        ), []);
+        <>
+            <FloatingIconsBackground />
+            <AnimatedGradientBackground />
+            <ParticlesBackground />
+        </>
+    ), []);
 
     useEffect(() => {
         let isMounted = true;
