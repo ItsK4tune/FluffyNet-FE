@@ -1,26 +1,39 @@
 import { useCallback } from "react"
 import { AiOutlineDelete } from "react-icons/ai";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import useDeletePost from "../../hooks/useDeletePost";
 
-const DeleteItem = () => {
-    const onDelete = useCallback(() => {        
-    },[]);
+interface DeleteItemProps {
+    post: Record<string, any>;
+}
+
+const DeleteItem: React.FC<DeleteItemProps> = ({ post }) => {
+    const { post_id, user_id } = post;
+    const { data: currentUser } = useCurrentUser()
+    const deletePost = useDeletePost({ post_id, user_id });
+
+    const onDelete = useCallback((event: any) => {
+        event.stopPropagation();
+        deletePost();
+    }, [deletePost]);
 
     return (
-        <div
-            onClick={onDelete}
-            className="
-                flex
-                cursor-pointer
-                flex-row
-                items-center
-                gap-2
-                text-neutral-500
-                transition
-                hover: text-red-500
-            "
-        >
-            <AiOutlineDelete size={20} />
-        </div>
+        (post.user_id === currentUser?.user_id &&
+            <div
+                onClick={onDelete}
+                className="
+                    flex 
+                    items-center 
+                    space-x-1 
+                    text-gray-500 
+                    hover:text-black 
+                    text-sm 
+                    cursor-pointer"
+            >
+                <AiOutlineDelete size={18} />
+                <span>Delete</span>
+            </div>
+        )
     );
 }
 

@@ -1,8 +1,17 @@
 import useSWR from 'swr';
-import { getCurrentUser } from '../services/current';
+import { env } from "../libs/index";
+import fetcher from '../libs/fetcher';
 
 const useCurrentUser = () => {
-    const { data, error, isLoading, mutate } = useSWR('currentUser', getCurrentUser);
-    return { data, error, isLoading, mutate };
-}
+
+    const { data, error, isLoading, mutate } = useSWR(`${env.be.url}/api/auth/status`, fetcher);
+
+    return {
+        data: data?.user ?? null,
+        error,
+        isLoading,
+        mutate        
+    };
+};
+
 export default useCurrentUser;

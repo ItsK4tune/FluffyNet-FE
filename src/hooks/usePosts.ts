@@ -1,14 +1,20 @@
 import useSWR from 'swr';
-
-import { getPosts } from '../services/posts';
+import fetcher from '../libs/fetcher';
+import { env } from '../libs';
 
 const usePosts = (user_id?: number) => {
-    const { data, error, isLoading, mutate } = useSWR(
-        user_id ? ['posts', user_id] : ['posts'], 
-        () => getPosts(user_id ? Number(user_id) : undefined)
-    );
+    const page = 1;
+    const limit = 30;
+    
+    const API_URL = user_id
+        ? `${env.be.url}/api/post/?user_id=${user_id}`
+        : `${env.be.url}/api/post/list/all?page=${page}&limit=${limit}`;
 
-    return { data, error, isLoading, mutate };
+    const { data, error, isLoading, mutate } = useSWR(API_URL, fetcher);
+
+    const posts = Array.isArray(data?.posts) ? data.posts : [];
+
+    return { data: posts, error, isLoading, mutate };
 };
 
 export default usePosts;

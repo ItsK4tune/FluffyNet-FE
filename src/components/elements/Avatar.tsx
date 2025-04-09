@@ -1,13 +1,20 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface AvatarProps {
     user_id: number;
 }
 
-export const Avatar: React.FC<AvatarProps> = () => {
-    const onClick = useCallback(() => {
+export const Avatar: React.FC<AvatarProps> = ({ user_id }) => {
+    const navigate = useNavigate();
 
-    },[]);
+    const onClick = useCallback((event: any) => {
+        event.stopPropagation();
+
+        const url = `user/${user_id}`;
+        
+        navigate(url);
+    },[navigate, user_id]);
 
     return (
         <div

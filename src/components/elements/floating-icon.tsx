@@ -1,11 +1,11 @@
 const FloatingIcons = () => {
-    const icons = ["💬", "🎵", "❤️", "🔔", "👍", "😊"]; //Test purpose
+    const images = ["src/assets/img/bell.png", "src/assets/img/comment.png", "src/assets/img/face.png", "src/assets/img/headphone.png", "src/assets/img/heart.png", "src/assets/img/music.png", "src/assets/img/thumbup.png"]; //Test purpose
 
     return (
         <div className="absolute inset-0 overflow-hidden">
-            {icons.map((icon, index) => {
-                const className = "absolute text-6xl opacity-30 animate-floating";
-
+            {images.map((image, index) => {
+                const className = "absolute text-6xl opacity-50 animate-floating";
+                
                 return (
                     <span
                         key={index}
@@ -17,7 +17,7 @@ const FloatingIcons = () => {
                             animationDelay: `${Math.random() * 2}s`
                         }}
                     >
-                        {icon}
+                        <img src={image} alt="bg-image" />
                     </span>
                 );
             })}

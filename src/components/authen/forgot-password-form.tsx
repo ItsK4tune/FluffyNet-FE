@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { cn } from "../libs/utils"
-import { InputForm } from "./elements/input-form"
-import { env } from "../libs";
-import { forgotPassword } from "../services/login/forgot-password"; 
+import { cn } from "../../libs/utils";
+import { InputForm } from "../elements/input-form";
+import { env } from "../../libs";
+import { forgotPassword } from "../../services/authen/forgot-password";
+import axios from "axios";
 
 interface ForgotPasswordFormProps {
     message: string;
@@ -47,14 +48,26 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                 ),
             ]);
             setMessage("A password reset link has been sent.");
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
+            setIsLoading(false);
         } finally {
             setIsLoading(false);
         }
@@ -64,12 +77,6 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
         setAnimation('animate-fade-out');
         await new Promise(resolve => setTimeout(resolve, env.animate.fade * 1000)); 
         setState('login');
-    }
-
-    const navigateToRegister = async () => {
-        setAnimation('animate-fade-out');
-        await new Promise(resolve => setTimeout(resolve, env.animate.fade * 1000)); 
-        setState('register');
     }
 
     return (
@@ -113,7 +120,7 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
 
                     <button
                         className={cn( 
-                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200 lg:hover:outline lg:hover:outline-black ",
+                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200",
                         {"opacity-50 cursor-not-allowed": isLoading} 
                         )}
                         onClick={handleForgot}
@@ -128,19 +135,19 @@ export const ForgotPasswordForm = ({message, setMessage, setState} : ForgotPassw
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200"
+                    {/* <button
+                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-300"
                         onClick={navigateToLogin} 
                     >
-                            Already have an account? Sign in
-                    </button>
+                        Back to Login
+                    </button> */}
 
-                    <button
-                        className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-100"
-                        onClick={navigateToRegister} 
+                    <p
+                        className="text-gray-500 text-center text-sm cursor-pointer font-semibold hover:text-black transition-colors duration-200"
+                        onClick={navigateToLogin}
                     >
-                        Don't have an account? Sign up
-                    </button>
+                        Remember your password? Back to Login
+                    </p>
                 </div>
             </div>
         </div>

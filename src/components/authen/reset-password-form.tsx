@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { InputForm } from "./elements/input-form";
-import { env } from "../libs";
-import { cn } from "../libs/utils";
-import { resetPassword } from "../services/reset-password/reset-password";
+import { InputForm } from "../elements/input-form";
+import { env } from "../../libs";
+import { cn } from "../../libs/utils";
+import { resetPassword } from "../../services/authen/reset-password";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface ResetPasswordFormProps {
     pwd: string;
@@ -41,18 +42,29 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
             }
 
             setIsLoading(true);
-            const response = await resetPassword(pwd, token);
-            setMessage((response as { data?: { message?: string } }).data?.message || "Password reset successfully!");
+            await resetPassword(pwd, token);
+            setMessage("Password reset successfully!");
             await new Promise(resolve => setTimeout(resolve, 1500));
             await navigateToLogin();
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred while resetting the password.");
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during reset password."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
             setIsLoading(false);
         }
     }
@@ -110,7 +122,7 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
                     {message && (
                         <p className={
                             `text-center mt-3 text-sm ${
-                                (message.startsWith("Password reset successfully!") || message.startsWith("New password set"))
+                                (message.startsWith("Password reset successfully!"))
                                     ? 'text-green-600' 
                                     : 'text-red-500'   
                             }`
@@ -137,12 +149,19 @@ export const ResetPasswordForm = ({ pwd, setPwd, message, setMessage, token }: R
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
+                    {/* <button
                         className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200 lg:hover:scale-102"
                         onClick={navigateToLogin}
                     >
                         Remember your password? Sign in
-                    </button>
+                    </button> */}
+
+                    <p
+                        className="text-gray-500 text-center text-sm cursor-pointer font-semibold hover:text-black transition-colors duration-200"
+                        onClick={navigateToLogin}
+                    >
+                        Remember your password? Back to Login
+                    </p>
                 </div>
             </div>
         </div>

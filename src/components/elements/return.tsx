@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { cn } from "../libs/utils";
-import { env } from "../libs";
+import { cn } from "../../libs/utils";
+import { env } from "../../libs";
 import { Link } from "react-router-dom"; 
-import { FloatingIconsBackground } from "./elements/floating-icon";
+import { FloatingIconsBackground } from "./floating-icon";
 
 const playfulMessages = [
     "Whoopsie-daisy! Looks like you took a fluffy detour. Let's find your way back! ☁️",
@@ -65,7 +65,7 @@ export const Return = () => {
                 </p>
 
                 <Link
-                     to="/login"
+                    to="/login"
                     className={cn(
                         "px-8 py-3 bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xl font-semibold rounded-full shadow-lg ",
                         "transition-all duration-300 ease-in-out",
@@ -74,10 +74,9 @@ export const Return = () => {
                         "z-10" 
                     )}
                 >
-                    ✨ {buttonText} ✨
+                    {buttonText}
                 </Link>
 
-                {/* Có thể thêm một hình ảnh nhỏ/icon vui nhộn */}
                 <div className="mt-8 text-5xl opacity-50">🐾</div>
             </div>
         </div>

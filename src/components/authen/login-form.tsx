@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { login } from "../services/login/login";
-import { InputForm } from "./elements/input-form"; // Assuming this is responsive or styles adapt
-import { cn } from "../libs/utils";
-import { env } from "../libs";
-import { google } from "../services/login/google";
+import { login } from "../../services/authen/login";
+import { InputForm } from "../elements/input-form";
+import { cn } from "../../libs/utils";
+import { env } from "../../libs";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 interface LoginFormProps {
     user: string;
@@ -23,14 +23,6 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        Object.keys(localStorage).forEach((key) => {
-            if (key.startsWith("jwt:")) {
-                navigate('/');
-            }
-        });
-    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -56,30 +48,30 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     setTimeout(() => reject(new Error("Request timeout!")), 5000)
                 ),
             ]);
-            const response = await loginWithTimeout;
-            const token = (response as { data?: { token?: string } }).data?.token;
-            if (token) {
-                Object.keys(localStorage).forEach((key) => {
-                    if (key.startsWith("jwt:")) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                localStorage.setItem(`jwt:${user}`, token); 
-                setMessage((response as { data?: { message?: string } }).data?.message || "Login Successful!");
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                await handleAnimation("animate-fade-out", "animate-fade-out");
-                navigate('/');
-            } else {
-                throw new Error("Login failed. Token not received."); 
+            await loginWithTimeout;
+            setMessage("Login Successful!");
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            await handleAnimation("animate-fade-out", "animate-fade-out");
+            navigate('/');
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during login."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many login attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred during login.");
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
             }
+        
+            setMessage(displayMessage); 
             setIsLoading(false);
         }
     };
@@ -88,15 +80,28 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
         if (isLoading)
             setMessage('Currently login. Please wait a bit');
         try {
-            google();
-        } catch (error) {
-            if ((error as any)?.response?.data?.message) {
-                setMessage((error as any).response.data.message);
-            } else if (error instanceof Error && error.message) {
-                setMessage(error.message);
-            } else {
-                setMessage("An unknown error occurred with Google Sign-in.");
+            const googleAuthUrl = `${env.be.url}/api/auth/google`;
+            window.location.href = googleAuthUrl;
+        } catch (error: any) { 
+            let displayMessage = "An unknown error occurred during login."; 
+        
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 429) {
+                    displayMessage = "Too many login attempts. Please wait a minute and try again.";
+                }
+                else if (error.response?.data?.message) {
+                    displayMessage = error.response.data.message;
+                }
+                else if (error.message) {
+                    displayMessage = error.message;
+                }
             }
+            else if (error instanceof Error && error.message) {
+                displayMessage = error.message;
+            }
+        
+            setMessage(displayMessage); 
+            setIsLoading(false);
         }
     };
 
@@ -113,6 +118,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
         else    await handleAnimation("animate-fade-out", "animate-fade-out");
         setState('register');
         setMessage("");
+        setUser("");
         setPwd("");
     }
 
@@ -141,7 +147,6 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                 formAnimation,
                 initAnimation
             )}>
-                {/* Form Card */}
                 <div className="bg-white p-6 md:p-8 lg:p-10 w-full max-w-md lg:max-w-none lg:w-[30vw] rounded-t-3xl lg:rounded-2xl shadow-lg z-10 flex flex-col">
                     <h2 className="text-2xl font-bold text-center">Welcome back</h2>
                     
@@ -154,7 +159,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         <InputForm
                             name="username" 
                             icon="mail"     
-                            placeholder="username or email" 
+                            placeholder="Username or email" 
                             className='placeholder-gray-400' 
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
@@ -172,7 +177,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
 
                     <button
                         className={cn( 
-                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200 lg:hover:outline lg:hover:outline-black ",
+                        "w-full bg-pink-300 text-black font-semibold p-3 rounded-xl mt-6 hover:bg-pink-400 hover:scale-102 active:scale-95 transition-transform duration-200",
                         {"opacity-50 cursor-not-allowed": isLoading} 
                         )}
                         onClick={handleLogin}
@@ -191,7 +196,7 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                     {message && (
                         <p className={
                             `text-center mt-3 text-sm ${
-                                (message.startsWith("Login successfully") || message.startsWith("Login Successful!"))
+                                (message.startsWith("Login Successful!"))
                                     ? 'text-green-600' 
                                     : 'text-red-500'   
                             }`
@@ -207,20 +212,27 @@ export const LoginForm = ({ user, setUser, pwd, setPwd, message, setMessage, set
                         <hr className="flex-grow border-yellow-400" />
                     </div>
 
-                    <button
+                    {/* <button
                         className="w-full bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl mb-3 hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-200 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-200" 
                         onClick={navigateToRegister}
                     >
                         <span>Don't have an account? Sign up</span>
-                    </button>
+                    </button> */}
 
                     <button
-                        className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:outline lg:hover:outline-black lg:hover:bg-gray-100 lg:hover:scale-102" 
+                        className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-800 font-medium p-3 rounded-xl hover:bg-gray-50 hover:scale-102 active:scale-95 transition lg:bg-gray-100 lg:border-none lg:text-black lg:font-semibold lg:hover:bg-gray-200 lg:hover:scale-102" 
                         onClick={handleGoogle}
                     >
                         <img src="src\assets\img\google.png" alt="Google" className="w-5 h-5 mr-2" />
                         Sign in with Google
                     </button>
+
+                    <p
+                        className="text-gray-500 text-center mt-4 text-sm cursor-pointer font-semibold hover:text-black" 
+                        onClick={navigateToRegister} 
+                    >
+                        Don't have an account? Sign up 
+                    </p>
                 </div>
             </div>
         </div>

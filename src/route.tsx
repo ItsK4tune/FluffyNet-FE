@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/login";
 import { ResetPassword } from "./pages/reset-password";
-import { AuthCallback } from "./pages/call-back";
 import { Index } from "./pages";
 import { App } from "./app";
 import { Setting } from "./pages/setting";
-import NewsFeed from "./pages/newsfeed";
+import { VerifyEmail } from "./pages/verify-email";
+import { Callback } from "./pages/callback";
 
 export const router = createBrowserRouter([
   {
@@ -14,10 +14,10 @@ export const router = createBrowserRouter([
     children: [
       { path: "", element: <Index /> },
       { path: "setting", element: <Setting /> },
+      { path: "login", element: <Login /> },
+      { path: "callback", element: <Callback />},
     ],
   },
-  { path: "login", element: <Login /> },
   { path: "reset-password", element: <ResetPassword /> },
-  { path: "auth/callback", element: <AuthCallback /> },
-  { path: "newsfeed", element: <NewsFeed /> },  
+  { path: "verify", element: <VerifyEmail /> }, 
 ]);
