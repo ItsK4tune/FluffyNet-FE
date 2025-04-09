@@ -113,9 +113,9 @@ export const App = () => {
      }
 
      if (!isAuthenticated) {
-          if (location.pathname !== '/login') {
+          if (location.pathname !== '/friends') {
                console.log("App: Not authenticated. Redirecting to login (direct axios flow).");
-               return <Navigate to="/login" state={{ from: location }} replace />;
+               return <Navigate to="/friends" state={{ from: location }} replace />;
           }
      }
      
