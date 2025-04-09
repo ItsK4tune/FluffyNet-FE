@@ -134,3 +134,126 @@ export const getPosts = async (user_id?: number) => {
         throw error;
     }
 };
+
+export const generateUploadUrl = async (
+    fileName: string,
+    fileType: 'image' | 'video',
+): Promise<{ uploadUrl: string; objectName: string }> => {
+    try {
+        let token = getAccessToken();
+        if (!token) throw new Error('No access token found');
+
+        const makeRequest = async (accessToken: string) => {
+            const response = await axios.post(
+                `${env.be.url}/api/post/upload-url`,
+                { fileName, fileType },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true,
+                }
+            );
+            return response;
+        };
+
+        try {
+            const response = await makeRequest(token);
+            return response.data;
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                console.warn("Access token expired, refreshing...");
+                token = await refreshAccessToken();
+                if (!token) throw new Error("No access token found");
+                const response = await makeRequest(token);
+                return response.data;
+            }
+            throw error;
+        }
+    } catch (error) {
+        console.error("Error generating upload URL:", error);
+        throw error;
+    }
+};
+
+export const generateDownLoadUrl = async (objectName: string): Promise<string | null> => {
+    try {
+        let token = getAccessToken();
+        if (!token) throw new Error('No access token found');
+
+        const makeRequest = async (accessToken: string) => {
+            const response = await axios.get(
+                `${env.be.url}/api/post/download-url`,
+                {
+                    params: { objectName },
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true,
+                }
+            );
+            return response;
+        };
+
+        try {
+            const response = await makeRequest(token);
+            return response.data.url;
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                console.warn("Access token expired, refreshing...");
+                token = await refreshAccessToken();
+                if (!token) throw new Error("No access token found");
+                const response = await makeRequest(token);
+                return response.data.url;
+            }
+            throw error;
+        }
+    } catch (error) {
+        console.error("Error generating download URL:", error);
+        throw error;
+    }
+}
+
+export const attachFileToPost = async (
+    post_id: number,
+    objectName: string,
+    fileType: "image" | "video"
+) => {
+    try {
+        let token = getAccessToken();
+        if (!token) throw new Error("No access token found");
+
+        const makeRequest = async (accessToken: string) => {
+            return await axios.post(
+                `${env.be.url}/api/post/${post_id}/attach-file`,
+                { objectName, fileType },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    withCredentials: true,
+                }
+            );
+        };
+
+        try {
+            const response = await makeRequest(token);
+            return response.data;
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                console.warn("Access token expired, refreshing...");
+                token = await refreshAccessToken();
+                if (!token) throw new Error("No access token found");
+                const response = await makeRequest(token);
+                return response.data;
+            }
+            throw error;
+        }
+    } catch (error) {
+        console.error("Error attaching file to post:", error);
+        throw error;
+    }
+};

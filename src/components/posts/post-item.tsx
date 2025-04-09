@@ -24,7 +24,7 @@ interface PostItemProps {
 
 export const PostItem: React.FC<PostItemProps> = ({ post }) => {
     const navigate = useNavigate();
-    const { data: currentUser } = useCurrentUser(post.user_id);
+    const { data: currentUser } = useCurrentUser();
 
     const goToUser = useCallback((e: any) => {
         e.stopPropagation();
