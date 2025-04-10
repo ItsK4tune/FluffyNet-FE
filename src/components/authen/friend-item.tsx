@@ -26,7 +26,7 @@ export const FriendItem: React.FC<FriendItemProps> = ({
             return (
                 <button
                     onClick={handleClick}
-                    className="text-sm px-4 py-1 rounded-full bg-sky-500 text-white hover:bg-sky-600 transition"
+                    className="text-sm px-4 py-1 rounded-full bg-rose-200 text-gray-700 hover:bg-rose-100 transition cursor-pointer"
                 >
                     Follow
                 </button>
@@ -37,7 +37,7 @@ export const FriendItem: React.FC<FriendItemProps> = ({
             return (
                 <button
                     onClick={handleClick}
-                    className="text-sm px-4 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
+                    className="text-base px-4 py-1 rounded-full bg-rose-200 text-gray-700 hover:bg-rose-100 transition cursor-pointer"
                 >
                     Follow back
                 </button>
@@ -47,7 +47,7 @@ export const FriendItem: React.FC<FriendItemProps> = ({
         return (
             <button
                 onClick={handleClick}
-                className="text-sm px-4 py-1 rounded-full border border-neutral-400 text-neutral-600 hover:bg-neutral-100 transition"
+                className="text-sm px-4 py-1 rounded-full border border-neutral-400 text-neutral-600 hover:bg-neutral-100 transition cursor-pointer"
             >
                 Unfollow
             </button>
@@ -55,7 +55,7 @@ export const FriendItem: React.FC<FriendItemProps> = ({
     };
 
     return (
-        <div className="flex items-center justify-between py-3 px-5 hover:bg-neutral-100 transition">
+        <div className="border-b border-neutral-200 last:border-b-0 flex items-center justify-between py-3 px-5 transition">
             <div className="flex items-center gap-3">
                 <Avatar user_id={user_id} />
                 <span className="font-semibold text-sm">{name}</span>

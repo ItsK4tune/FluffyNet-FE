@@ -8,7 +8,32 @@ const authHeader = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true, 
   };
+};
+
+const handleRequest = async <T>(requestFn: () => Promise<T>): Promise<T> => {
+  try {
+    return await requestFn();
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      try {
+        // Gọi API refresh token
+        const refreshRes = await axios.post(`${env.be.url}/api/auth/refresh`, null, {
+          withCredentials: true,
+        });
+        const newAccessToken = refreshRes.data.accessToken;
+        useAuthStore.getState().setAccessToken(newAccessToken);
+        return await requestFn();
+      } catch (refreshError) {
+        // Refresh thất bại 
+        useAuthStore.getState().logout();
+        throw refreshError;
+      }
+    } else {
+      throw error;
+    }
+  }
 };
 
 // Lấy danh sách gợi ý kết bạn

@@ -1,4 +1,5 @@
 import { Avatar } from "./Avatar";
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
   activeIcon: string; 
@@ -18,25 +19,11 @@ export const Navbar = ({ activeIcon }: NavbarProps) => {
   ];
 
   return (
-    <div className="flex items-center justify-between px-6 py-2 bg-white shadow-sm relative">
-      {/* Left */}
-      <div className="absolute left-6">
-        <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
-          <img
-            src="src/assets/img/search.svg"
-            alt="Search"
-            className="w-4 h-4 mr-2 opacity-60"
-          />
-          <input
-            type="text"
-            placeholder="Search"
-            className="bg-transparent outline-none text-base text-gray-600 placeholder-gray-400 w-45 h-7"
-          />
-        </div>
-      </div>
+    <div className="sticky top-0 z-30 w-full flex items-center justify-between px-6 py-3 bg-white shadow-sm relative">
+      <Link to="/" className="text-2xl font-bold text-pink-500 font-serif">FluffyNet <span className="text-xl">☁️</span></Link>
 
-      {/* Center */}
-      <div className="flex items-center space-x-20 mx-auto">
+      
+      <div className="flex items-center space-x-24 mx-auto">
         {centerIcons.map((icon, index) => {
           const isActive = icon.name === activeIcon;
           const iconSrc = `src/assets/img/${isActive ? `${icon.name}-active.svg` : icon.src}`;
@@ -52,7 +39,7 @@ export const Navbar = ({ activeIcon }: NavbarProps) => {
         <Avatar user_id={1} />
       </div>
 
-      {/* Right */}
+      
       <div className="flex items-center space-x-6 absolute right-8">
         {rightIcons.map((icon, index) => (
           <img
