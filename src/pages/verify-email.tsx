@@ -5,8 +5,11 @@ import { Return } from "../components/elements/return";
 import { cn } from "../libs/utils";
 import { env } from "../libs";
 import { verifyEmail } from "../services/authen/verify";
+<<<<<<< HEAD
 import { ParticlesBackground } from "../components/elements/particle";
 import { AnimatedGradientBackground } from "../components/elements/gradient-background";
+=======
+>>>>>>> add/upload-file
 
 export const VerifyEmail = () => {
     const [initAnimation, setInitAnimation] = useState('animate-fade-in');
@@ -15,6 +18,7 @@ export const VerifyEmail = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
 
+<<<<<<< HEAD
     const background = useMemo(() => (
         <>
             <FloatingIconsBackground />
@@ -22,6 +26,9 @@ export const VerifyEmail = () => {
             <ParticlesBackground />
         </>
     ), []);
+=======
+    const floatingIconsMemo = useMemo(() => <FloatingIconsBackground />, []);
+>>>>>>> add/upload-file
 
     if (!token) {
         return (
@@ -57,9 +64,15 @@ export const VerifyEmail = () => {
     }, [token]);
 
     return (
+<<<<<<< HEAD
         <div className="relative flex h-screen overflow-hidden"> 
             <div className="absolute inset-0">
                 {background}
+=======
+        <div className="flex h-screen bg-pink-100">
+            <div className="absolute inset-0">
+                {floatingIconsMemo}
+>>>>>>> add/upload-file
             </div>
 
             <div className="flex flex-col justify-center lg:flex-row lg:justify-start w-full min-h-screen items-center">

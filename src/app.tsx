@@ -3,6 +3,12 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { env } from "./libs";
 import { useAuthStore } from "./stores/auth-store";
+<<<<<<< HEAD
+=======
+import { Toaster } from "react-hot-toast";
+import PostEditModal from "./components/modals/PostEditModal";
+import PostCreateModal from "./components/modals/PostCreateModal";
+>>>>>>> add/upload-file
 
 export const App = () => {
      const location = useLocation();
@@ -26,6 +32,7 @@ export const App = () => {
                const tryRefreshToken = async (): Promise<string | null> => {
                     try {
                          console.log("App Mount: Attempting refresh (direct axios)...");
+<<<<<<< HEAD
                          const response = await Promise.race([
                               axios.get<{ accessToken: string }>(`${env.be.url}/api/auth/refresh`, { 
                                    withCredentials: true 
@@ -35,6 +42,12 @@ export const App = () => {
                               ),
                          ]);
                          return (response as { data: { accessToken: string } }).data.accessToken;
+=======
+                         const response = await axios.get<{ accessToken: string }>(`${env.be.url}/api/auth/refresh`, {
+                              withCredentials: true
+                         });
+                         return response.data.accessToken;
+>>>>>>> add/upload-file
                     } catch (error) {
                          if (axios.isAxiosError(error) && error.response?.status === 401) {
                               console.log("App Mount: Refresh failed (401 - direct axios). No valid session.");
@@ -49,6 +62,7 @@ export const App = () => {
                     if (!token) return null;
                     try {
                          console.log("App Mount: Fetching user status (direct axios)...");
+<<<<<<< HEAD
                          const response = await Promise.race([
                               axios.get(`${env.be.url}/api/auth/status`, {
                                    headers: { Authorization: `Bearer ${token}` }, 
@@ -63,21 +77,42 @@ export const App = () => {
                               return formatedResponse.data.user;
                          }
                          return null; 
+=======
+                         const response = await axios.get(`${env.be.url}/api/auth/status`, {
+                              headers: { Authorization: `Bearer ${token}` },
+                              withCredentials: true
+                         });
+                         if (response.data?.isAuthenticated && response.data?.user) {
+                              return response.data.user;
+                         }
+                         return null;
+>>>>>>> add/upload-file
                     } catch (error) {
                          console.error("App Mount: Error fetching status (direct axios):", error);
                          return null;
                     }
                };
 
+<<<<<<< HEAD
                const newAccessToken = await tryRefreshToken(); 
+=======
+               const newAccessToken = await tryRefreshToken();
+>>>>>>> add/upload-file
 
                if (isMounted) {
                     if (newAccessToken) {
                          console.log("App Mount: Session valid, received new AT (direct axios).");
+<<<<<<< HEAD
                          setAccessToken(newAccessToken); 
 
                          const userInfo = await fetchUserStatus(newAccessToken);
                          if (isMounted) { 
+=======
+                         setAccessToken(newAccessToken);
+
+                         const userInfo = await fetchUserStatus(newAccessToken);
+                         if (isMounted) {
+>>>>>>> add/upload-file
                               if (userInfo) {
                                    setUser(userInfo);
                                    console.log("App Mount: User info updated (direct axios):", userInfo);
@@ -92,7 +127,12 @@ export const App = () => {
                     }
                     setLoading(false);
                }
+<<<<<<< HEAD
           }; 
+=======
+
+          };
+>>>>>>> add/upload-file
 
           if (isLoading) {
                initializeAuth();
@@ -118,6 +158,17 @@ export const App = () => {
                return <Navigate to="/login" state={{ from: location }} replace />;
           }
      }
+<<<<<<< HEAD
      
      return <Outlet />;
+=======
+     return (
+          <>
+               <Outlet />;
+               <Toaster />;
+               <PostEditModal />;
+               <PostCreateModal />
+          </>
+     );
+>>>>>>> add/upload-file
 };
