@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
-import { Avatar } from "../elements/avatar";
+import { Avatar } from "../elements/Avatar";
 
 interface Post {
     post_id: number;

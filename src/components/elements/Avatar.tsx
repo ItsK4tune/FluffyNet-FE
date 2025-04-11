@@ -24,7 +24,7 @@ export const Avatar: React.FC<AvatarProps> = ({ user_id }) => {
                 transition
                 cursor-pointer
                 relative
-                w-12 h-12
+                w-10 h-10
             "
         >
             <img 
