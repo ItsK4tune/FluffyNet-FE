@@ -6,7 +6,7 @@ import { App } from "./app";
 import { Setting } from "./pages/setting";
 import { VerifyEmail } from "./pages/verify-email";
 import { Callback } from "./pages/callback";
-import { Friend } from "./pages/friends";
+import { Follow } from "./pages/follow";
 
 
 export const router = createBrowserRouter([
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "setting", element: <Setting /> },
       { path: "callback", element: <Callback />},
-      { path: "friends", element: <Friend />}, 
+      { path: "follow", element: <Follow />}, 
     ],
   },
   { path: "reset-password", element: <ResetPassword /> },

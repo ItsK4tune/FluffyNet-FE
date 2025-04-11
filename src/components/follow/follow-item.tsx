@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Avatar } from "../elements/avatar";
 
-interface FriendItemProps {
+interface FollowItemProps {
     user_id: number;
     name: string;
     avatar: string;
@@ -9,7 +9,7 @@ interface FriendItemProps {
     onAction: (user_id: number) => void;
 }
 
-export const FriendItem: React.FC<FriendItemProps> = ({
+export const FollowItem: React.FC<FollowItemProps> = ({
     user_id,
     name,
     // avatar,

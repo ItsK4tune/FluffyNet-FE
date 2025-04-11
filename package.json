@@ -27,6 +27,7 @@
     "react-router-dom": "^7.4.1",
     "react-toastify": "^11.0.5",
     "react-tsparticles": "^2.12.2",
+    "swr": "^2.3.3",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.17",
     "tsparticles-engine": "^2.12.0",

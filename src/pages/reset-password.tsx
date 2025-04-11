@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { FloatingIconsBackground } from "../components/elements/floating-icon";
 import { ResetPasswordForm } from "../components/authen/reset-password-form";
-import { ResetPasswordForm } from "../components/authen/reset-password-form";
 import { useSearchParams } from "react-router-dom";
 import { Return } from "../components/elements/return";
 import { ParticlesBackground } from "../components/elements/particle";

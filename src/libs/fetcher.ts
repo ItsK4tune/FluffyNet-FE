@@ -36,51 +36,51 @@ const refreshAccessToken = async () => {
     }
 };
 
-const fetcher = async (url: string) => {
+const request = async (method: "get" | "post" | "delete", url: string, options: any = {}) => {
     let token = useAuthStore.getState().accessToken;
     if (!token) throw new Error("No access token found");
-
+  
     try {
-        const response = await axios.get(url, {
+      const response = await axios({
+        method,
+        url: `${env.be.url}${url}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+        ...options,
+      });
+  
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        try {
+          token = await refreshAccessToken();
+          const retryResponse = await axios({
+            method,
+            url: `${env.be.url}${url}`,
             headers: {
-                Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
             withCredentials: true,
-        });
-
-        return response.data;
-    } catch (error: any) {
-        if (error.response?.status === 401) {
-            console.warn("Access token expired, attempting to refresh...");
-
-            try {
-                // Refresh the access token
-                token = await refreshAccessToken();
-
-                // Retry the request with the new token
-                const retryResponse = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                });
-
-                return retryResponse.data;
-            } catch (refreshError) {
-                console.error("Failed to refresh token or retry request:", refreshError);
-                window.location.href = "/login"; // Redirect to login page
-                throw refreshError;
-            }
+            ...options,
+          });
+          return retryResponse.data;
+        } catch (refreshError) {
+          window.location.href = "/login";
+          throw refreshError;
         }
-
-        if (error.response?.status === 500) {
-            console.error("Server error (500):", error.response.data);
-            throw new Error("Internal server error. Please try again later.");
-        }
-
-        console.error("Error during fetch:", error);
-        throw error;
+      }
+  
+      throw error;
     }
-};
-
-export default fetcher;
+  };
+  
+ 
+  const fetcher = {
+    get: (url: string, config?: any) => request("get", url, config),
+    post: (url: string, data?: any, config?: any) => request("post", url, { ...config, data }),
+    delete: (url: string, config?: any) => request("delete", url, config),
+  };
+  
+  export default fetcher;
