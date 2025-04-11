@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Avatar } from "../elements/Avatar";
+import { Avatar } from "../elements/avatar";
 
 interface FriendItemProps {
     user_id: number;
@@ -12,7 +12,7 @@ interface FriendItemProps {
 export const FriendItem: React.FC<FriendItemProps> = ({
     user_id,
     name,
-    avatar,
+    // avatar,
     status,
     onAction
 }) => {

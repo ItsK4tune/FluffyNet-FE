@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { FriendItem } from "../components/authen/friend-item";
+import { FriendItem } from "../components/follow/friend-item";
 import { Navbar } from "../components/elements/navbar";
 import {
   getFollowers,
   getFollowing,
   getSuggestions,
-  followUser,
-  unfollowUser,
-} from "../services/authen/friends";
+  // followUser,
+  // unfollowUser,
+} from "../services/follow/friends";
 
 interface Friend {
   user_id: number;
@@ -144,9 +144,9 @@ export const Friend = () => {
   ) => {
     try {
       if (currentStatus === "follow" || currentStatus === "follow-back") {
-        await followUser(user_id);
+        // await followUser(user_id);
       } else if (currentStatus === "unfollow") {
-        await unfollowUser(user_id);
+        // await unfollowUser(user_id);
       }
       // refresh lại
     } catch (err) {
